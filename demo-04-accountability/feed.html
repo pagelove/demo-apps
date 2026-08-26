@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; object-src 'none'">
+<title>Feed — 100 Days of Practice (members only)</title>
+</head>
+<body>
+
+<!--
+  Every check-in, flat, one per member per day (enforced via checkInKey,
+  a client-synthesized unique key -- see BUILD-REFERENCE.md). Unlike #4,
+  where only the author could read their own submission, here ANY
+  signed-in member may read the whole feed -- the AuthorizationRule below
+  grants the "users" group wholesale rather than scoping to data-author.
+  Whole-resource GET Deny for anonymous, tier-differentiated Allow for
+  any signed-in member -- structurally the docs' own worked example
+  shape, not the same-tier pattern proven broken. Only the deny side is
+  live-testable without a real OIDC session.
+-->
+<ul id="pl-checkins" aria-label="Check-ins">
+
+<li class="checkin" id="checkin-alice-2026-08-20" data-author="alice" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/CheckIn">
+  <meta itemprop="checkInKey" content="2026-08-20:alice">
+  <meta itemprop="author" content="alice">
+  <meta itemprop="date" content="2026-08-20">
+  <meta itemprop="goalProgress" content="on-track">
+  <meta itemprop="note" content="Full session in, felt good today.">
+  <meta itemprop="createdAt" content="2026-08-20T19:00:00Z">
+</li>
+<li class="checkin" id="checkin-alice-2026-08-19" data-author="alice" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/CheckIn">
+  <meta itemprop="checkInKey" content="2026-08-19:alice">
+  <meta itemprop="author" content="alice">
+  <meta itemprop="date" content="2026-08-19">
+  <meta itemprop="goalProgress" content="ahead">
+  <meta itemprop="note" content="Doubled up since I'll miss tomorrow.">
+  <meta itemprop="createdAt" content="2026-08-19T18:30:00Z">
+</li>
+<li class="checkin" id="checkin-ben-2026-08-20" data-author="ben" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/CheckIn">
+  <meta itemprop="checkInKey" content="2026-08-20:ben">
+  <meta itemprop="author" content="ben">
+  <meta itemprop="date" content="2026-08-20">
+  <meta itemprop="goalProgress" content="behind">
+  <meta itemprop="note" content="Rough week, but showed up.">
+  <meta itemprop="createdAt" content="2026-08-20T20:15:00Z">
+</li>
+
+</ul>
+
+<!-- ShapeConstraint -->
+<div hidden itemscope itemtype="https://pagelove.org/ShapeConstraint">
+  <meta itemprop="resource" content="/demo-04-accountability/feed.html">
+  <meta itemprop="selector" content="#pl-checkins">
+  <code itemprop="permit">ul[id="pl-checkins"][aria-label]</code>
+  <code itemprop="permit">li[class="checkin"][id^="checkin-"][data-author][itemscope][itemtype]</code>
+  <code itemprop="permit">meta[itemprop="checkInKey"][content]</code>
+  <code itemprop="permit">meta[itemprop="author"][content]</code>
+  <code itemprop="permit">meta[itemprop="date"][content]</code>
+  <code itemprop="permit">meta[itemprop="goalProgress"][content]</code>
+  <code itemprop="permit">meta[itemprop="note"][content]</code>
+  <code itemprop="permit">meta[itemprop="createdAt"][content]</code>
+</div>
+<div hidden itemscope itemtype="https://pagelove.org/ShapeConstraint">
+  <meta itemprop="resource" content="/demo-04-accountability/feed.html">
+  <meta itemprop="selector" content="#pl-checkins > li">
+  <code itemprop="permit">li[class="checkin"][id^="checkin-"][data-author][itemscope][itemtype]</code>
+  <code itemprop="permit">meta[itemprop="checkInKey"][content]</code>
+  <code itemprop="permit">meta[itemprop="author"][content]</code>
+  <code itemprop="permit">meta[itemprop="date"][content]</code>
+  <code itemprop="permit">meta[itemprop="goalProgress"][content]</code>
+  <code itemprop="permit">meta[itemprop="note"][content]</code>
+  <code itemprop="permit">meta[itemprop="createdAt"][content]</code>
+</div>
+
+<!-- Authorization -->
+<div hidden itemscope itemtype="https://pagelove.org/AuthorizationRule">
+  <meta itemprop="actor" content="*">
+  <meta itemprop="resource" content="/demo-04-accountability/feed.html">
+  <meta itemprop="method" content="GET">
+  <meta itemprop="action" content="Deny">
+</div>
+<div hidden itemscope itemtype="https://pagelove.org/AuthorizationRule">
+  <meta itemprop="actor" content="users">
+  <meta itemprop="resource" content="/demo-04-accountability/feed.html">
+  <meta itemprop="method" content="GET">
+  <meta itemprop="action" content="Allow">
+</div>
+<div hidden itemscope itemtype="https://pagelove.org/AuthorizationRule">
+  <meta itemprop="actor" content="*">
+  <meta itemprop="resource" content="/demo-04-accountability/feed.html">
+  <meta itemprop="method" content="POST">
+  <meta itemprop="selector" content="#pl-checkins">
+  <meta itemprop="action" content="Allow">
+</div>
+
+</body>
+</html>

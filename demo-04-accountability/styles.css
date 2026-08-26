@@ -1,0 +1,231 @@
+/* ============================================================
+   05 — Accountability · "Quiet Metrics"
+   Calm personal dashboard. Soft cards, progress ring, no webfont.
+   ============================================================ */
+
+:root {
+  --bg: #F7F8FA;
+  --surface: #FFFFFF;
+  --hairline: #E8EBF0;
+  --ink: #1A1D23;
+  --muted: #666C7C;
+  --accent: #1E57FF;
+  --positive: #2FA36B;
+  --warn: #E2A23B;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+/* The UA's `[hidden] { display: none }` loses to any author `display` rule
+   below, and every demo here toggles `element.hidden` to show and hide
+   panels. Without this, hiding silently stops working. */
+[hidden] { display: none !important; }
+
+/* A long unbroken token -- a pasted URL, a 200-character "word" -- must wrap
+   rather than push its container past its grid track and break the row.
+   `anywhere` rather than `break-word` on purpose: only `anywhere` reduces the
+   element's min-content width, and a grid or flex item defaults to
+   `min-width: auto`, which refuses to shrink below its longest word. With
+   `break-word` alone, demo-06 and demo-10 still blew 1.4k px past the viewport.
+   The `min-width: 0` below is the other half of the same fix. */
+h1, h2, h3, h4, p, li, a, span, strong, em, code, label, time,
+button, input, textarea { overflow-wrap: anywhere; }
+.card, .post, .listing, .idea, .topic, .question, .profile-card, .submission,
+.lesson, .resource, .nominee, .archive-item, .member-card, .comment, .reply,
+.answer, .idea-body-wrap { min-width: 0; }
+
+
+body {
+  margin: 0;
+  padding-block-end: 72px;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.wrap { max-width: 880px; margin-inline: auto; padding: 0 20px; }
+
+h1, h2, h3 { margin: 0; font-weight: 600; letter-spacing: -0.02em; }
+p { margin: 0 0 12px; }
+p:last-child { margin-bottom: 0; }
+a { color: var(--accent); }
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 8px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+.topbar {
+  padding-block: clamp(36px, 6vw, 64px) 20px;
+  display: flex; flex-wrap: wrap; gap: 18px;
+  justify-content: space-between; align-items: flex-end;
+}
+.topbar h1 { font-size: clamp(26px, 3.4vw, 38px); line-height: 1.15; }
+.topbar > div > p { color: var(--muted); max-width: 52ch; margin-top: 10px; }
+
+.identity-picker { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.identity-picker select {
+  font: inherit; font-size: 14px; letter-spacing: 0; text-transform: none;
+  margin-left: 6px; min-height: 44px; padding: 9px 12px;
+  background: var(--surface); color: var(--ink);
+  border: 1px solid var(--hairline); border-radius: 10px;
+}
+
+/* ---------- Stat tiles (chrome; index.html is unconstrained) ---------- */
+
+.stats {
+  display: grid; gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  margin-block: 8px 26px;
+}
+.stat {
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 1px 2px rgba(16,24,40,0.06), 0 8px 24px -14px rgba(16,24,40,0.14);
+}
+.stat-label { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+.stat-value { font-size: clamp(34px, 5vw, 52px); font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; display: inline-block; }
+.stat-ring { display: flex; align-items: center; gap: 16px; }
+
+.ring { flex: none; }
+.ring circle { fill: none; stroke-width: 9; stroke-linecap: round; }
+.ring .track { stroke: var(--hairline); }
+.ring .value { stroke: var(--accent); transform: rotate(-90deg); transform-origin: 50% 50%; }
+
+.week { display: flex; gap: 6px; margin-top: 14px; }
+.week i { flex: 1; height: 26px; border-radius: 7px; background: var(--hairline); display: block; }
+.week i.on { background: var(--positive); }
+
+.privacy-note {
+  background: #EEF3FF; border: 1px solid #D6E2FF;
+  border-radius: 14px; padding: 16px 18px;
+  font-size: 14px; margin-bottom: 24px;
+}
+.privacy-note strong { color: var(--accent); }
+
+/* ---------- Check-in form ---------- */
+
+.checkin-form {
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 16px;
+  padding: 22px; margin-bottom: 22px;
+  box-shadow: 0 1px 2px rgba(16,24,40,0.06), 0 8px 24px -14px rgba(16,24,40,0.14);
+}
+.checkin-form h2 { font-size: 19px; margin-bottom: 16px; }
+
+.field { display: block; margin-bottom: 14px; }
+.field label { display: block; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.field input, .field select, .field textarea {
+  width: 100%; font: inherit; color: var(--ink);
+  background: var(--bg); border: 1px solid var(--hairline);
+  border-radius: 10px; padding: 11px 13px; min-height: 44px;
+}
+.field textarea { resize: vertical; min-height: 4rem; }
+.field select:focus, .field textarea:focus { border-color: var(--accent); }
+
+.btn {
+  font: inherit; font-weight: 600; cursor: pointer;
+  min-height: 44px; padding: 12px 22px;
+  background: var(--accent); color: #FFFFFF;
+  border: 0; border-radius: 11px;
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+.btn:hover { transform: translateY(-1px); box-shadow: 0 10px 22px -12px rgba(79,124,255,0.8); }
+
+.btn-ghost {
+  font: inherit; font-size: 13px; cursor: pointer;
+  min-height: 44px; padding: 10px 16px;
+  background: var(--surface); color: var(--muted);
+  border: 1px solid var(--hairline); border-radius: 11px;
+}
+.btn-ghost:hover { color: var(--ink); border-color: var(--accent); }
+
+.result-box {
+  margin-top: 16px; padding: 16px;
+  border-radius: 14px; background: var(--surface);
+  border: 1px solid var(--hairline);
+}
+.status-badge {
+  display: inline-block; font-size: 11px; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 999px; color: #FFFFFF;
+}
+.status-badge.on-time { background: var(--positive); }
+.status-badge.late { background: var(--warn); }
+
+/* ---------- Toasts ---------- */
+
+.toast-stack { position: fixed; right: 16px; bottom: 88px; display: grid; gap: 8px; z-index: 50; }
+.toast {
+  font-size: 13px; background: var(--ink); color: #FFFFFF;
+  border-radius: 11px; padding: 12px 16px;
+  box-shadow: 0 14px 32px -18px rgba(16,24,40,0.7);
+}
+.toast.error { background: #D64545; }
+
+/* ---------- Motion ---------- */
+
+.motion .stat, .motion .checkin-form { opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .motion .stat, .motion .checkin-form { opacity: 1 !important; transform: none !important; }
+  .btn, .btn-ghost { transition: none !important; }
+}
+
+/* Footnote under a submitted result. Was an inline style attribute emitted from
+   app.js, which CSP drops outright, against a --ink-muted token that no
+   stylesheet defines -- so it rendered as plain body text. */
+.result-note { font-size: 13px; color: var(--muted); margin-top: 10px; }
+
+/* ---------- The 100-day grid ---------- */
+/* The page was three small tiles and a form — accurate, and thin. The whole
+   premise is "100 days", so show all hundred: one cell per day, filled as they
+   are earned. It is the only element on the page that states the goal. */
+
+.hundred {
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 16px;
+  padding: 22px 24px 24px;
+  margin-bottom: 26px;
+  box-shadow: 0 1px 2px rgba(16,24,40,0.06), 0 8px 24px -14px rgba(16,24,40,0.14);
+}
+.hundred-head {
+  display: flex; flex-wrap: wrap; gap: 10px 18px;
+  align-items: baseline; justify-content: space-between;
+  margin-bottom: 16px;
+}
+.hundred-head h2 { font-size: 17px; letter-spacing: -0.01em; }
+.hundred-legend {
+  display: flex; gap: 14px; align-items: center;
+  font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--muted); margin: 0;
+}
+.key { width: 9px; height: 9px; border-radius: 2px; display: inline-block; margin-right: 5px; vertical-align: -1px; }
+.key-done  { background: var(--positive); }
+.key-today { background: var(--accent); }
+.key-todo  { background: var(--hairline); }
+
+.hundred-grid {
+  display: grid;
+  grid-template-columns: repeat(20, minmax(0, 1fr));
+  gap: 4px;
+}
+@media (max-width: 640px) { .hundred-grid { grid-template-columns: repeat(10, minmax(0, 1fr)); } }
+.hundred-grid i {
+  display: block; aspect-ratio: 1; border-radius: 2px;
+  background: var(--hairline);
+}
+.hundred-grid i.done  { background: var(--positive); }
+.hundred-grid i.today { background: var(--accent); box-shadow: 0 0 0 2px rgba(30,87,255,0.22); }
+
+/* The streak ring was small enough to read as decoration. Make it the anchor. */
+.stat-ring { gap: 20px; }
+.ring { width: 104px; height: 104px; }
+
+.motion .hundred { opacity: 0; }
+@media (prefers-reduced-motion: reduce) { .motion .hundred { opacity: 1 !important; transform: none !important; } }

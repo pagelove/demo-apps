@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; object-src 'none'">
+<title>Show & Tell — Weekend Makers</title>
+<link rel="icon" href="/favicon.svg">
+<meta name="description" content="A show-and-tell community demo built on Pagelove: members post projects, others comment and react.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Show &amp; Tell — Weekend Makers">
+<meta property="og:description" content="A show-and-tell community demo built on Pagelove: members post projects, others comment and react.">
+<meta property="og:url" content="https://__PAGELOVE_HOST__/demo-02-show-and-tell/">
+<meta property="og:image" content="https://__PAGELOVE_HOST__/assets/og-demo-apps.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#11152A">
+<link rel="canonical" href="https://__PAGELOVE_HOST__/demo-02-show-and-tell/">
+<link rel="stylesheet" href="/demo-02-show-and-tell/styles.css?v=30">
+<script src="/demo-02-show-and-tell/app.js?v=11" defer></script>
+<script src="/assets/vendor/anime.umd.min.js" defer></script>
+<script src="/assets/motion-core.js?v=2" defer></script>
+<script src="/demo-02-show-and-tell/motion.js?v=2" defer></script>
+<script src="/assets/ui-enhance.js?v=6" defer></script>
+</head>
+<body>
+
+<div class="hero">
+  <canvas id="hero-canvas" aria-hidden="true"></canvas>
+  <div class="wrap hero-inner">
+    <p class="eyebrow">Weekend Makers · Show &amp; Tell</p>
+
+<header class="topbar">
+  <div>
+    <h1>Weekend Makers — Show & Tell</h1>
+    <p>Weekend projects deserve more than a group chat. Share what you made, tell its story, and invite the community into the process.</p>
+  </div>
+  <p class="identity-picker">
+    <label for="pl-identity">Posting as</label>
+    <select id="pl-identity">
+      <option value="alice">Alice</option>
+      <option value="ben">Ben</option>
+      <option value="carla">Carla</option>
+      <option value="dmitri">Dmitri</option>
+      <option value="elena">Elena</option>
+      <option value="farid">Farid</option>
+    </select>
+  </p>
+</header>
+  </div>
+</div>
+
+<div class="wrap">
+
+<p class="compose-jump"><button type="button" class="btn-jump" data-jump-to="pl-new-submission">+ Show something you made</button></p>
+
+<ul class="grid" id="pl-grid" aria-label="Submissions">
+
+<li class="card" id="submission-birdhouse" data-author="alice" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/ShowSubmission">
+  <div class="card-thumb" aria-hidden="true">🏠</div>
+  <div class="card-body">
+    <h2 class="card-title" itemprop="title">Cedar birdhouse, first woodworking project</h2>
+    <p class="card-desc" itemprop="description">Built entirely with hand tools over a weekend. The roof is angled wrong but the birds don't seem to mind.</p>
+    <ul class="tags"><li class="tag" itemprop="tags">woodworking</li><li class="tag" itemprop="tags">beginner</li></ul>
+    <p class="card-meta">by <strong itemprop="author">Alice</strong> · <time itemprop="createdAt" datetime="2026-08-18T10:00:00Z">Aug 18</time></p>
+    <div class="card-foot">
+      <span class="reaction-count" data-count-for="submission-birdhouse">0</span>
+      <button type="button" class="btn-react" data-react-for="submission-birdhouse">👍 React</button>
+      <button type="button" class="btn-ghost" data-comment-toggle="comments-submission-birdhouse">💬 Comment</button>
+    </div>
+    <ul class="comments" id="comments-submission-birdhouse" aria-label="Comments" data-submission="submission-birdhouse">
+      <li class="comment" id="comment-bird-1" data-author="ben" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/ShowComment">
+        <meta itemprop="submissionId" content="submission-birdhouse">
+        <p class="comment-meta"><strong itemprop="author">Ben</strong> <time itemprop="createdAt" datetime="2026-08-18T11:00:00Z"></time></p>
+        <p class="comment-body" itemprop="body">The angled roof is honestly the best part, don't fix it.</p>
+      </li>
+    </ul>
+  </div>
+</li>
+
+<li class="card" id="submission-lamp" data-author="ben" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/ShowSubmission">
+  <div class="card-thumb" aria-hidden="true">💡</div>
+  <div class="card-body">
+    <h2 class="card-title" itemprop="title">3D-printed lamp shade, generative pattern</h2>
+    <p class="card-desc" itemprop="description">Wrote a small script to generate the voronoi pattern, then printed it in translucent PETG. Glows really nicely at night.</p>
+    <ul class="tags"><li class="tag" itemprop="tags">3d-printing</li><li class="tag" itemprop="tags">generative</li></ul>
+    <p class="card-meta">by <strong itemprop="author">Ben</strong> · <time itemprop="createdAt" datetime="2026-08-17T15:30:00Z">Aug 17</time></p>
+    <div class="card-foot">
+      <span class="reaction-count" data-count-for="submission-lamp">0</span>
+      <button type="button" class="btn-react" data-react-for="submission-lamp">👍 React</button>
+      <button type="button" class="btn-ghost" data-comment-toggle="comments-submission-lamp">💬 Comment</button>
+    </div>
+    <ul class="comments" id="comments-submission-lamp" aria-label="Comments" data-submission="submission-lamp"></ul>
+  </div>
+</li>
+
+<li class="card" id="submission-sourdough" data-author="carla" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/ShowSubmission">
+  <div class="card-thumb" aria-hidden="true">🍞</div>
+  <div class="card-body">
+    <h2 class="card-title" itemprop="title">Finally got an open crumb on sourdough</h2>
+    <p class="card-desc" itemprop="description">Six months of dense bricks and this one finally opened up. Higher hydration and a longer bulk ferment did it.</p>
+    <ul class="tags"><li class="tag" itemprop="tags">baking</li><li class="tag" itemprop="tags">sourdough</li></ul>
+    <p class="card-meta">by <strong itemprop="author">Carla</strong> · <time itemprop="createdAt" datetime="2026-08-16T09:00:00Z">Aug 16</time></p>
+    <div class="card-foot">
+      <span class="reaction-count" data-count-for="submission-sourdough">0</span>
+      <button type="button" class="btn-react" data-react-for="submission-sourdough">👍 React</button>
+      <button type="button" class="btn-ghost" data-comment-toggle="comments-submission-sourdough">💬 Comment</button>
+    </div>
+    <ul class="comments" id="comments-submission-sourdough" aria-label="Comments" data-submission="submission-sourdough">
+      <li class="comment" id="comment-sourdough-1" data-author="dmitri" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/ShowComment">
+        <meta itemprop="submissionId" content="submission-sourdough">
+        <p class="comment-meta"><strong itemprop="author">Dmitri</strong> <time itemprop="createdAt" datetime="2026-08-16T09:30:00Z"></time></p>
+        <p class="comment-body" itemprop="body">That crumb shot is genuinely bakery-level. What hydration did you land on?</p>
+      </li>
+      <li class="comment" id="comment-sourdough-2" data-author="carla" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/ShowComment">
+        <meta itemprop="submissionId" content="submission-sourdough">
+        <p class="comment-meta"><strong itemprop="author">Carla</strong> <time itemprop="createdAt" datetime="2026-08-16T10:00:00Z"></time></p>
+        <p class="comment-body" itemprop="body">80%! Way higher than I expected to be able to handle.</p>
+      </li>
+    </ul>
+  </div>
+</li>
+
+<li class="card" id="submission-garden-bed" data-author="dmitri" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/ShowSubmission">
+  <div class="card-thumb" aria-hidden="true">🌱</div>
+  <div class="card-body">
+    <h2 class="card-title" itemprop="title">Raised garden bed from reclaimed fence boards</h2>
+    <p class="card-desc" itemprop="description">Neighbor was replacing their fence and let me take the old boards. Cedar, still solid, just needed a wash.</p>
+    <ul class="tags"><li class="tag" itemprop="tags">gardening</li><li class="tag" itemprop="tags">upcycling</li></ul>
+    <p class="card-meta">by <strong itemprop="author">Dmitri</strong> · <time itemprop="createdAt" datetime="2026-08-15T14:00:00Z">Aug 15</time></p>
+    <div class="card-foot">
+      <span class="reaction-count" data-count-for="submission-garden-bed">0</span>
+      <button type="button" class="btn-react" data-react-for="submission-garden-bed">👍 React</button>
+      <button type="button" class="btn-ghost" data-comment-toggle="comments-submission-garden-bed">💬 Comment</button>
+    </div>
+    <ul class="comments" id="comments-submission-garden-bed" aria-label="Comments" data-submission="submission-garden-bed"></ul>
+  </div>
+</li>
+
+</ul>
+
+<form class="new-submission" id="pl-new-submission">
+  <h2>Show something you made</h2>
+  <span class="field">
+    <label for="ns-title">Title</label>
+    <input type="text" id="ns-title" maxlength="140" required>
+  </span>
+  <span class="field">
+    <label for="ns-emoji">Thumbnail emoji</label>
+    <input type="text" id="ns-emoji" maxlength="4" value="🛠️">
+  </span>
+  <span class="field">
+    <label for="ns-desc">Description</label>
+    <textarea id="ns-desc" maxlength="1500" required></textarea>
+  </span>
+  <span class="field">
+    <label for="ns-tags">Tags (comma-separated)</label>
+    <input type="text" id="ns-tags" placeholder="woodworking, weekend">
+  </span>
+  <button type="submit" class="btn">Post project</button>
+</form>
+
+</div>
+
+<div class="new-comment" id="pl-comment-panel" hidden>
+  <div class="reply-panel-body">
+    <p class="reply-meta reply-target-label" id="pl-comment-target-label"></p>
+    <label class="visually-hidden" for="pl-comment-text">Comment text</label>
+    <textarea id="pl-comment-text" placeholder="Write a comment…" required></textarea>
+  </div>
+  <button type="button" class="btn" id="pl-comment-submit">Post comment</button>
+  <button type="button" class="btn-ghost" id="pl-comment-cancel">Cancel</button>
+</div>
+
+<div class="toast-stack" id="pl-toasts" role="status" aria-live="polite"></div>
+
+<!-- Reactions, one per member per submission, keyed like #2/#3/#13/#6 -->
+<ul id="pl-reactions" aria-label="Reactions" hidden>
+  <li id="reaction-bird-1" data-submission="submission-birdhouse" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/ShowReaction">
+    <meta itemprop="reactionKey" content="submission-birdhouse:ben"><meta itemprop="submissionId" content="submission-birdhouse"><meta itemprop="voter" content="ben">
+  </li>
+  <li id="reaction-bird-2" data-submission="submission-birdhouse" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/ShowReaction">
+    <meta itemprop="reactionKey" content="submission-birdhouse:carla"><meta itemprop="submissionId" content="submission-birdhouse"><meta itemprop="voter" content="carla">
+  </li>
+  <li id="reaction-sourdough-1" data-submission="submission-sourdough" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/ShowReaction">
+    <meta itemprop="reactionKey" content="submission-sourdough:dmitri"><meta itemprop="submissionId" content="submission-sourdough"><meta itemprop="voter" content="dmitri">
+  </li>
+</ul>
+
+<!-- ShapeConstraint: submissions -->
+<div hidden itemscope itemtype="https://pagelove.org/ShapeConstraint">
+  <meta itemprop="resource" content="/demo-02-show-and-tell/index.html">
+  <meta itemprop="selector" content="#pl-grid">
+  <code itemprop="permit">ul[class="grid"][id="pl-grid"][aria-label]</code>
+  <code itemprop="permit">li[class="card"][id^="submission-"][data-author][itemscope][itemtype]</code>
+  <code itemprop="permit">div[class="card-thumb"][aria-hidden]</code>
+  <code itemprop="permit">div[class="card-body"]</code>
+  <code itemprop="permit">h2[class="card-title"][itemprop="title"]</code>
+  <code itemprop="permit">p[class="card-desc"][itemprop="description"]</code>
+  <code itemprop="permit">ul[class="tags"]</code>
+  <code itemprop="permit">li[class="tag"][itemprop="tags"]</code>
+  <code itemprop="permit">p[class="card-meta"]</code>
+  <code itemprop="permit">strong[itemprop="author"]</code>
+  <code itemprop="permit">time[itemprop="createdAt"][datetime]</code>
+  <code itemprop="permit">div[class="card-foot"]</code>
+  <code itemprop="permit">span[class="reaction-count"][data-count-for]</code>
+  <code itemprop="permit">button[class="btn-react"][type="button"][data-react-for]</code>
+  <code itemprop="permit">button[class="btn-ghost"][type="button"][data-comment-toggle]</code>
+  <code itemprop="permit">ul[class="comments"][id^="comments-"][aria-label][data-submission]</code>
+</div>
+<div hidden itemscope itemtype="https://pagelove.org/ShapeConstraint">
+  <meta itemprop="resource" content="/demo-02-show-and-tell/index.html">
+  <meta itemprop="selector" content="#pl-grid > li">
+  <code itemprop="permit">li[class="card"][id^="submission-"][data-author][itemscope][itemtype]</code>
+  <code itemprop="permit">div[class="card-thumb"][aria-hidden]</code>
+  <code itemprop="permit">div[class="card-body"]</code>
+  <code itemprop="permit">h2[class="card-title"][itemprop="title"]</code>
+  <code itemprop="permit">p[class="card-desc"][itemprop="description"]</code>
+  <code itemprop="permit">ul[class="tags"]</code>
+  <code itemprop="permit">li[class="tag"][itemprop="tags"]</code>
+  <code itemprop="permit">p[class="card-meta"]</code>
+  <code itemprop="permit">strong[itemprop="author"]</code>
+  <code itemprop="permit">time[itemprop="createdAt"][datetime]</code>
+  <code itemprop="permit">div[class="card-foot"]</code>
+  <code itemprop="permit">span[class="reaction-count"][data-count-for]</code>
+  <code itemprop="permit">button[class="btn-react"][type="button"][data-react-for]</code>
+  <code itemprop="permit">button[class="btn-ghost"][type="button"][data-comment-toggle]</code>
+  <code itemprop="permit">ul[class="comments"][id^="comments-"][aria-label][data-submission]</code>
+</div>
+
+<!-- ShapeConstraint: comments -->
+<div hidden itemscope itemtype="https://pagelove.org/ShapeConstraint">
+  <meta itemprop="resource" content="/demo-02-show-and-tell/index.html">
+  <meta itemprop="selector" content=".comments">
+  <code itemprop="permit">ul[class="comments"][id^="comments-"][aria-label][data-submission]</code>
+  <code itemprop="permit">li[class="comment"][id^="comment-"][data-author][itemscope][itemtype]</code>
+  <code itemprop="permit">meta[itemprop="submissionId"][content]</code>
+  <code itemprop="permit">p[class="comment-meta"]</code>
+  <code itemprop="permit">strong[itemprop="author"]</code>
+  <code itemprop="permit">time[itemprop="createdAt"][datetime]</code>
+  <code itemprop="permit">p[class="comment-body"][itemprop="body"]</code>
+</div>
+<div hidden itemscope itemtype="https://pagelove.org/ShapeConstraint">
+  <meta itemprop="resource" content="/demo-02-show-and-tell/index.html">
+  <meta itemprop="selector" content=".comments > li">
+  <code itemprop="permit">li[class="comment"][id^="comment-"][data-author][itemscope][itemtype]</code>
+  <code itemprop="permit">meta[itemprop="submissionId"][content]</code>
+  <code itemprop="permit">p[class="comment-meta"]</code>
+  <code itemprop="permit">strong[itemprop="author"]</code>
+  <code itemprop="permit">time[itemprop="createdAt"][datetime]</code>
+  <code itemprop="permit">p[class="comment-body"][itemprop="body"]</code>
+</div>
+
+<!-- ShapeConstraint: reactions -->
+<div hidden itemscope itemtype="https://pagelove.org/ShapeConstraint">
+  <meta itemprop="resource" content="/demo-02-show-and-tell/index.html">
+  <meta itemprop="selector" content="#pl-reactions">
+  <code itemprop="permit">ul[id="pl-reactions"][aria-label][hidden]</code>
+  <code itemprop="permit">li[id^="reaction-"][data-submission][itemscope][itemtype]</code>
+  <code itemprop="permit">meta[itemprop="reactionKey"][content]</code>
+  <code itemprop="permit">meta[itemprop="submissionId"][content]</code>
+  <code itemprop="permit">meta[itemprop="voter"][content]</code>
+</div>
+<div hidden itemscope itemtype="https://pagelove.org/ShapeConstraint">
+  <meta itemprop="resource" content="/demo-02-show-and-tell/index.html">
+  <meta itemprop="selector" content="#pl-reactions > li">
+  <code itemprop="permit">li[id^="reaction-"][data-submission][itemscope][itemtype]</code>
+  <code itemprop="permit">meta[itemprop="reactionKey"][content]</code>
+  <code itemprop="permit">meta[itemprop="submissionId"][content]</code>
+  <code itemprop="permit">meta[itemprop="voter"][content]</code>
+</div>
+
+<!-- Authorization -->
+<div hidden itemscope itemtype="https://pagelove.org/AuthorizationRule">
+  <meta itemprop="actor" content="*">
+  <meta itemprop="resource" content="/demo-02-show-and-tell/index.html">
+  <meta itemprop="method" content="GET">
+  <meta itemprop="action" content="Allow">
+</div>
+<div hidden itemscope itemtype="https://pagelove.org/AuthorizationRule">
+  <meta itemprop="actor" content="*">
+  <meta itemprop="resource" content="/demo-02-show-and-tell/index.html">
+  <meta itemprop="method" content="POST">
+  <meta itemprop="selector" content="#pl-grid">
+  <meta itemprop="action" content="Allow">
+</div>
+<div hidden itemscope itemtype="https://pagelove.org/AuthorizationRule">
+  <meta itemprop="actor" content="*">
+  <meta itemprop="resource" content="/demo-02-show-and-tell/index.html">
+  <meta itemprop="method" content="POST">
+  <meta itemprop="selector" content=".comments">
+  <meta itemprop="action" content="Allow">
+</div>
+<div hidden itemscope itemtype="https://pagelove.org/AuthorizationRule">
+  <meta itemprop="actor" content="*">
+  <meta itemprop="resource" content="/demo-02-show-and-tell/index.html">
+  <meta itemprop="method" content="POST">
+  <meta itemprop="selector" content="#pl-reactions">
+  <meta itemprop="action" content="Allow">
+</div>
+
+</body>
+</html>

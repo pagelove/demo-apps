@@ -1,0 +1,29 @@
+name: Validate demos
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: Check references, hostnames, whitespace, and metadata
+        run: python scripts/check-repo.py
+      - name: Check JavaScript syntax
+        shell: bash
+        run: |
+          mkdir -p .ci-build
+          while IFS= read -r -d '' file; do
+            bun build --target browser "$file" --outdir .ci-build >/dev/null
+          done < <(find . -name '*.js' -not -path './assets/vendor/*' -not -path './.git/*' -not -path './.ci-build/*' -print0)

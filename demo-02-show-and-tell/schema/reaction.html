@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Schema — Reaction</title></head>
+<body>
+
+<!-- reactionKey = submissionId:voter, single unique property -- see
+     BUILD-REFERENCE.md for why composite unique groups aren't used. -->
+<div itemscope itemtype="https://pagelove.org/Schema">
+  <meta itemprop="type" content="https://__PAGELOVE_HOST__/vocab/ShowReaction">
+  <meta itemprop="name" content="Reaction">
+
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="reactionKey">
+    <meta itemprop="type" content="https://schema.host/Text">
+    <meta itemprop="cardinality" content="1..1">
+    <meta itemprop="unique" content="true">
+  </div>
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="submissionId">
+    <meta itemprop="type" content="https://schema.host/Text">
+    <meta itemprop="cardinality" content="1..1">
+  </div>
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="voter">
+    <meta itemprop="type" content="https://schema.host/Text">
+    <meta itemprop="cardinality" content="1..1">
+  </div>
+</div>
+
+</body>
+</html>

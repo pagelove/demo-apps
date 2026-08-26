@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; object-src 'none'">
+<title>Event — Trail Runners Fall Meetup</title>
+<link rel="icon" href="/favicon.svg">
+<meta name="description" content="An event-community demo built on Pagelove: RSVP, sessions, attendee list, and a capacity-driven waitlist.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Event — Trail Runners Fall Meetup">
+<meta property="og:description" content="An event-community demo built on Pagelove: RSVP, sessions, attendee list, and a capacity-driven waitlist.">
+<meta property="og:url" content="https://__PAGELOVE_HOST__/demo-01-event/">
+<meta property="og:image" content="https://__PAGELOVE_HOST__/assets/og-demo-apps.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#11152A">
+<link rel="canonical" href="https://__PAGELOVE_HOST__/demo-01-event/">
+<link rel="stylesheet" href="/demo-01-event/styles.css?v=12">
+<script src="/demo-01-event/app.js?v=11" defer></script>
+<script src="/assets/vendor/anime.umd.min.js" defer></script>
+<script src="/assets/motion-core.js?v=2" defer></script>
+<script src="/demo-01-event/motion.js?v=1" defer></script>
+<script src="/assets/ui-enhance.js?v=6" defer></script>
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="topbar">
+  <div>
+    <h1>Trail Runners — Fall Meetup</h1>
+    <p>Everything the group needs for a good day on the trail: one clear invitation, a useful schedule, and a place for every guest.</p>
+  </div>
+  <p class="identity-picker">
+    <label for="pl-identity">RSVPing as</label>
+    <select id="pl-identity">
+      <option value="alice">Alice</option>
+      <option value="ben">Ben</option>
+      <option value="carla">Carla</option>
+      <option value="dmitri">Dmitri</option>
+      <option value="elena">Elena</option>
+      <option value="farid">Farid</option>
+    </select>
+  </p>
+</header>
+
+<section class="event-card" id="event-fall-meetup" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/Event">
+  <meta itemprop="capacity" content="6">
+  <h2 itemprop="title">Fall Trail Meetup — Ridge Loop</h2>
+  <p class="event-meta">
+    <time itemprop="eventDate" datetime="2026-09-12T08:00:00Z">Sat, Sep 12, 8:00 AM</time> ·
+    <span itemprop="location">Ridge Loop trailhead, north lot</span>
+  </p>
+  <p>Easy-to-moderate 7 miles, regroup at the overlook around mile 4. Bring your own water, we'll have snacks at the end.</p>
+  <div class="countdown" id="pl-countdown" aria-hidden="true">
+    <div class="countdown-unit"><span class="countdown-value" data-unit="days">0</span><span class="countdown-label">Days</span></div>
+    <div class="countdown-unit"><span class="countdown-value" data-unit="hours">0</span><span class="countdown-label">Hours</span></div>
+    <div class="countdown-unit"><span class="countdown-value" data-unit="minutes">0</span><span class="countdown-label">Min</span></div>
+  </div>
+  <p class="visually-hidden" id="pl-countdown-text"></p>
+
+  <p class="capacity-label" id="capacity-label"></p>
+  <div class="rsvp-actions">
+    <button type="button" class="btn" id="pl-rsvp">RSVP</button>
+    <button type="button" class="btn-ghost" id="pl-cancel-rsvp" hidden>Cancel RSVP</button>
+  </div>
+
+  <h3>Sessions</h3>
+  <ul class="sessions" id="pl-sessions" aria-label="Sessions">
+    <li class="session" id="session-warmup" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/Session">
+      <meta itemprop="sessionEventId" content="event-fall-meetup">
+      <p class="session-time" itemprop="sessionTime">7:45 AM</p>
+      <p class="session-title" itemprop="title">Group warmup and route briefing</p>
+      <p class="session-speaker">led by <span itemprop="speaker">Alice</span></p>
+    </li>
+    <li class="session" id="session-overlook" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/Session">
+      <meta itemprop="sessionEventId" content="event-fall-meetup">
+      <p class="session-time" itemprop="sessionTime">9:15 AM</p>
+      <p class="session-title" itemprop="title">Overlook regroup + trail mix break</p>
+      <p class="session-speaker">led by <span itemprop="speaker">Ben</span></p>
+    </li>
+    <li class="session" id="session-cooldown" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/Session">
+      <meta itemprop="sessionEventId" content="event-fall-meetup">
+      <p class="session-time" itemprop="sessionTime">10:30 AM</p>
+      <p class="session-title" itemprop="title">Cooldown stretch and gear talk</p>
+      <p class="session-speaker">led by <span itemprop="speaker">Carla</span></p>
+    </li>
+  </ul>
+
+  <h3>Attending</h3>
+  <ul class="attendee-list" id="pl-attendees" aria-label="Attendees"></ul>
+</section>
+
+</div>
+
+<div class="toast-stack" id="pl-toasts" role="status" aria-live="polite"></div>
+
+<!-- Seed RSVPs: 4 going, room for 2 more before the 6-person capacity
+     fills (client-computed, see schema/event.html for why this isn't
+     server-enforced). -->
+<ul id="pl-rsvps" aria-label="RSVPs" hidden>
+  <li id="rsvp-alice" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/RSVP">
+    <meta itemprop="rsvpKey" content="event-fall-meetup:alice">
+    <meta itemprop="rsvpEventId" content="event-fall-meetup">
+    <meta itemprop="attendee" content="alice">
+    <meta itemprop="rsvpStatus" content="going">
+  </li>
+  <li id="rsvp-ben" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/RSVP">
+    <meta itemprop="rsvpKey" content="event-fall-meetup:ben">
+    <meta itemprop="rsvpEventId" content="event-fall-meetup">
+    <meta itemprop="attendee" content="ben">
+    <meta itemprop="rsvpStatus" content="going">
+  </li>
+  <li id="rsvp-carla" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/RSVP">
+    <meta itemprop="rsvpKey" content="event-fall-meetup:carla">
+    <meta itemprop="rsvpEventId" content="event-fall-meetup">
+    <meta itemprop="attendee" content="carla">
+    <meta itemprop="rsvpStatus" content="going">
+  </li>
+  <li id="rsvp-dmitri" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/RSVP">
+    <meta itemprop="rsvpKey" content="event-fall-meetup:dmitri">
+    <meta itemprop="rsvpEventId" content="event-fall-meetup">
+    <meta itemprop="attendee" content="dmitri">
+    <meta itemprop="rsvpStatus" content="going">
+  </li>
+</ul>
+
+<!-- ShapeConstraint: rsvps -->
+<div hidden itemscope itemtype="https://pagelove.org/ShapeConstraint">
+  <meta itemprop="resource" content="/demo-01-event/index.html">
+  <meta itemprop="selector" content="#pl-rsvps">
+  <code itemprop="permit">ul[id="pl-rsvps"][aria-label][hidden]</code>
+  <code itemprop="permit">li[id^="rsvp-"][itemscope][itemtype]</code>
+  <code itemprop="permit">meta[itemprop="rsvpKey"][content]</code>
+  <code itemprop="permit">meta[itemprop="rsvpEventId"][content]</code>
+  <code itemprop="permit">meta[itemprop="attendee"][content]</code>
+  <code itemprop="permit">meta[itemprop="rsvpStatus"][content]</code>
+</div>
+<div hidden itemscope itemtype="https://pagelove.org/ShapeConstraint">
+  <meta itemprop="resource" content="/demo-01-event/index.html">
+  <meta itemprop="selector" content="#pl-rsvps > li">
+  <code itemprop="permit">li[id^="rsvp-"][itemscope][itemtype]</code>
+  <code itemprop="permit">meta[itemprop="rsvpKey"][content]</code>
+  <code itemprop="permit">meta[itemprop="rsvpEventId"][content]</code>
+  <code itemprop="permit">meta[itemprop="attendee"][content]</code>
+  <code itemprop="permit">meta[itemprop="rsvpStatus"][content]</code>
+</div>
+
+<!-- Authorization -->
+<div hidden itemscope itemtype="https://pagelove.org/AuthorizationRule">
+  <meta itemprop="actor" content="*">
+  <meta itemprop="resource" content="/demo-01-event/index.html">
+  <meta itemprop="method" content="GET">
+  <meta itemprop="action" content="Allow">
+</div>
+<div hidden itemscope itemtype="https://pagelove.org/AuthorizationRule">
+  <meta itemprop="actor" content="*">
+  <meta itemprop="resource" content="/demo-01-event/index.html">
+  <meta itemprop="method" content="POST">
+  <meta itemprop="selector" content="#pl-rsvps">
+  <meta itemprop="action" content="Allow">
+</div>
+<div hidden itemscope itemtype="https://pagelove.org/AuthorizationRule">
+  <meta itemprop="actor" content="*">
+  <meta itemprop="resource" content="/demo-01-event/index.html">
+  <meta itemprop="method" content="DELETE">
+  <meta itemprop="selector" content="[id^='rsvp-']">
+  <meta itemprop="action" content="Allow">
+</div>
+<div hidden itemscope itemtype="https://pagelove.org/AuthorizationRule">
+  <meta itemprop="actor" content="*">
+  <meta itemprop="resource" content="/demo-01-event/index.html">
+  <meta itemprop="method" content="PUT">
+  <meta itemprop="selector" content="[id^='rsvp-'] meta[itemprop='rsvpStatus']">
+  <meta itemprop="action" content="Allow">
+</div>
+
+</body>
+</html>

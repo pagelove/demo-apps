@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; object-src 'none'">
+<title>Resource Exchange — Tool Library Co-op</title>
+<link rel="icon" href="/favicon.svg">
+<meta name="description" content="A resource-exchange demo built on Pagelove: need/have listings, atomic single-claimant claiming, and release-back-to-open.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Resource Exchange — Tool Library Co-op">
+<meta property="og:description" content="A resource-exchange demo built on Pagelove: need/have listings, atomic single-claimant claiming, and release-back-to-open.">
+<meta property="og:url" content="https://__PAGELOVE_HOST__/demo-03-resource-exchange/">
+<meta property="og:image" content="https://__PAGELOVE_HOST__/assets/og-demo-apps.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#11152A">
+<link rel="canonical" href="https://__PAGELOVE_HOST__/demo-03-resource-exchange/">
+<link rel="stylesheet" href="/demo-03-resource-exchange/styles.css?v=26">
+<script src="/demo-03-resource-exchange/app.js?v=11" defer></script>
+<script src="/assets/vendor/anime.umd.min.js" defer></script>
+<script src="/assets/motion-core.js?v=2" defer></script>
+<script src="/demo-03-resource-exchange/motion.js?v=1" defer></script>
+<script src="/assets/ui-enhance.js?v=6" defer></script>
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="topbar">
+  <div>
+    <h1>Tool Library Co-op — Resource Exchange</h1>
+    <p>Share what you have, ask for what you need, and let the community coordinate the handoff without stepping on one another.</p>
+  </div>
+  <p class="identity-picker">
+    <label for="pl-identity">Acting as</label>
+    <select id="pl-identity">
+      <option value="alice">Alice</option>
+      <option value="ben">Ben</option>
+      <option value="carla">Carla</option>
+      <option value="dmitri">Dmitri</option>
+      <option value="elena">Elena</option>
+      <option value="farid">Farid</option>
+    </select>
+  </p>
+  <dl class="pl-stats">
+    <div><dt>Haves</dt><dd data-count="#pl-listings .listing[data-type='have']">3</dd></div>
+    <div><dt>Needs</dt><dd data-count="#pl-listings .listing[data-type='need']">3</dd></div>
+    <div><dt>Open</dt><dd data-count="#pl-listings .status-tag[data-status='open']">4</dd></div>
+  </dl>
+</header>
+
+<div class="filter-tabs" role="group" aria-label="Filter listings by type">
+  <button type="button" class="filter-tab is-active" aria-pressed="true" data-filter="all">All</button>
+  <button type="button" class="filter-tab" aria-pressed="false" data-filter="need">Needs</button>
+  <button type="button" class="filter-tab" aria-pressed="false" data-filter="have">Haves</button>
+</div>
+
+<p class="compose-jump"><button type="button" class="btn-jump" data-jump-to="pl-new-listing">+ Post a listing</button></p>
+
+<ul class="listing-grid" id="pl-listings" aria-label="Listings">
+
+<li class="listing" id="listing-ladder" data-author="alice" data-type="have" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/Listing">
+  <meta itemprop="listingId" content="listing-ladder">
+  <span class="listing-type" data-type="have" itemprop="listingType">Have</span>
+  <h2 class="listing-title" itemprop="title">8ft step ladder, good condition</h2>
+  <p class="listing-desc" itemprop="description">Barely used, just don't have room for it anymore. Pickup only.</p>
+  <p class="listing-meta">by <strong itemprop="author">Alice</strong> · <span class="status-tag" id="status-listing-ladder" data-status="open" itemprop="status">open</span></p>
+  <div class="listing-actions" data-listing="listing-ladder"></div>
+</li>
+
+<li class="listing" id="listing-drill" data-author="ben" data-type="need" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/Listing">
+  <meta itemprop="listingId" content="listing-drill">
+  <span class="listing-type" data-type="need" itemprop="listingType">Need</span>
+  <h2 class="listing-title" itemprop="title">Hammer drill for one afternoon</h2>
+  <p class="listing-desc" itemprop="description">Putting up shelves this weekend, don't own one and don't want to buy for a single job.</p>
+  <p class="listing-meta">by <strong itemprop="author">Ben</strong> · <span class="status-tag" id="status-listing-drill" data-status="claimed" itemprop="status">claimed</span></p>
+  <div class="listing-actions" data-listing="listing-drill"></div>
+</li>
+
+<li class="listing" id="listing-mower" data-author="carla" data-type="have" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/Listing">
+  <meta itemprop="listingId" content="listing-mower">
+  <span class="listing-type" data-type="have" itemprop="listingType">Have</span>
+  <h2 class="listing-title" itemprop="title">Push mower, works fine, needs a blade sharpen</h2>
+  <p class="listing-desc" itemprop="description">Upgraded to electric. This one still runs, just needs a bit of care.</p>
+  <p class="listing-meta">by <strong itemprop="author">Carla</strong> · <span class="status-tag" id="status-listing-mower" data-status="open" itemprop="status">open</span></p>
+  <div class="listing-actions" data-listing="listing-mower"></div>
+</li>
+
+<li class="listing" id="listing-canning" data-author="dmitri" data-type="need" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/Listing">
+  <meta itemprop="listingId" content="listing-canning">
+  <span class="listing-type" data-type="need" itemprop="listingType">Need</span>
+  <h2 class="listing-title" itemprop="title">Canning pot and jar lifter</h2>
+  <p class="listing-desc" itemprop="description">Tomatoes are coming in fast, want to try canning before they go bad.</p>
+  <p class="listing-meta">by <strong itemprop="author">Dmitri</strong> · <span class="status-tag" id="status-listing-canning" data-status="completed" itemprop="status">completed</span></p>
+  <div class="listing-actions" data-listing="listing-canning"></div>
+</li>
+
+<li class="listing" id="listing-projector" data-author="elena" data-type="have" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/Listing">
+  <meta itemprop="listingId" content="listing-projector">
+  <span class="listing-type" data-type="have" itemprop="listingType">Have</span>
+  <h2 class="listing-title" itemprop="title">Projector and screen for a backyard movie night</h2>
+  <p class="listing-desc" itemprop="description">Decent brightness, needs full dark though. Comes with an HDMI cable.</p>
+  <p class="listing-meta">by <strong itemprop="author">Elena</strong> · <span class="status-tag" id="status-listing-projector" data-status="open" itemprop="status">open</span></p>
+  <div class="listing-actions" data-listing="listing-projector"></div>
+</li>
+
+<li class="listing" id="listing-truck" data-author="farid" data-type="need" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/Listing">
+  <meta itemprop="listingId" content="listing-truck">
+  <span class="listing-type" data-type="need" itemprop="listingType">Need</span>
+  <h2 class="listing-title" itemprop="title">Pickup truck for one dump run</h2>
+  <p class="listing-desc" itemprop="description">Clearing out a shed, just need a truck for a couple hours on a Saturday.</p>
+  <p class="listing-meta">by <strong itemprop="author">Farid</strong> · <span class="status-tag" id="status-listing-truck" data-status="open" itemprop="status">open</span></p>
+  <div class="listing-actions" data-listing="listing-truck"></div>
+</li>
+
+</ul>
+
+<form class="new-listing" id="pl-new-listing">
+  <h2>Post a listing</h2>
+  <span class="field">
+    <label for="nl-type">Type</label>
+    <select id="nl-type"><option value="need">I need…</option><option value="have">I have…</option></select>
+  </span>
+  <span class="field"><label for="nl-title">Title</label><input type="text" id="nl-title" maxlength="140" required></span>
+  <span class="field"><label for="nl-desc">Details</label><textarea id="nl-desc" maxlength="1000" required></textarea></span>
+  <button type="submit" class="btn">Post listing</button>
+</form>
+
+</div>
+
+<div class="toast-stack" id="pl-toasts" role="status" aria-live="polite"></div>
+
+<!-- Claims: the real double-claimant guard, see schema/listing.html.
+     claim-listing-drill pre-exists because that listing is seeded claimed. -->
+<ul id="pl-claims" aria-label="Claims" hidden>
+  <li class="claim" id="claim-listing-drill" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/Claim">
+    <meta itemprop="listingId" content="listing-drill">
+    <meta itemprop="claimant" content="carla">
+    <meta itemprop="claimedAt" content="2026-08-20T14:00:00Z">
+  </li>
+</ul>
+
+<!-- ShapeConstraint -->
+<div hidden itemscope itemtype="https://pagelove.org/ShapeConstraint">
+  <meta itemprop="resource" content="/demo-03-resource-exchange/index.html">
+  <meta itemprop="selector" content="#pl-listings">
+  <code itemprop="permit">ul[class="listing-grid"][id="pl-listings"][aria-label]</code>
+  <code itemprop="permit">li[class="listing"][id^="listing-"][data-author][data-type][itemscope][itemtype]</code>
+  <code itemprop="permit">meta[itemprop="listingId"][content]</code>
+  <code itemprop="permit">span[class="listing-type"][data-type][itemprop="listingType"]</code>
+  <code itemprop="permit">h2[class="listing-title"][itemprop="title"]</code>
+  <code itemprop="permit">p[class="listing-desc"][itemprop="description"]</code>
+  <code itemprop="permit">p[class="listing-meta"]</code>
+  <code itemprop="permit">strong[itemprop="author"]</code>
+  <code itemprop="permit">span[class="status-tag"][id^="status-"][data-status][itemprop="status"]</code>
+  <code itemprop="permit">div[class="listing-actions"][data-listing]</code>
+</div>
+<div hidden itemscope itemtype="https://pagelove.org/ShapeConstraint">
+  <meta itemprop="resource" content="/demo-03-resource-exchange/index.html">
+  <meta itemprop="selector" content="#pl-listings > li">
+  <code itemprop="permit">li[class="listing"][id^="listing-"][data-author][data-type][itemscope][itemtype]</code>
+  <code itemprop="permit">meta[itemprop="listingId"][content]</code>
+  <code itemprop="permit">span[class="listing-type"][data-type][itemprop="listingType"]</code>
+  <code itemprop="permit">h2[class="listing-title"][itemprop="title"]</code>
+  <code itemprop="permit">p[class="listing-desc"][itemprop="description"]</code>
+  <code itemprop="permit">p[class="listing-meta"]</code>
+  <code itemprop="permit">strong[itemprop="author"]</code>
+  <code itemprop="permit">span[class="status-tag"][id^="status-"][data-status][itemprop="status"]</code>
+  <code itemprop="permit">div[class="listing-actions"][data-listing]</code>
+</div>
+
+<!-- ShapeConstraint: claims -->
+<div hidden itemscope itemtype="https://pagelove.org/ShapeConstraint">
+  <meta itemprop="resource" content="/demo-03-resource-exchange/index.html">
+  <meta itemprop="selector" content="#pl-claims">
+  <code itemprop="permit">ul[id="pl-claims"][aria-label][hidden]</code>
+  <code itemprop="permit">li[class="claim"][id^="claim-"][itemscope][itemtype]</code>
+  <code itemprop="permit">meta[itemprop="listingId"][content]</code>
+  <code itemprop="permit">meta[itemprop="claimant"][content]</code>
+  <code itemprop="permit">meta[itemprop="claimedAt"][content]</code>
+</div>
+<div hidden itemscope itemtype="https://pagelove.org/ShapeConstraint">
+  <meta itemprop="resource" content="/demo-03-resource-exchange/index.html">
+  <meta itemprop="selector" content="#pl-claims > li">
+  <code itemprop="permit">li[class="claim"][id^="claim-"][itemscope][itemtype]</code>
+  <code itemprop="permit">meta[itemprop="listingId"][content]</code>
+  <code itemprop="permit">meta[itemprop="claimant"][content]</code>
+  <code itemprop="permit">meta[itemprop="claimedAt"][content]</code>
+</div>
+
+<!-- Authorization -->
+<div hidden itemscope itemtype="https://pagelove.org/AuthorizationRule">
+  <meta itemprop="actor" content="*">
+  <meta itemprop="resource" content="/demo-03-resource-exchange/index.html">
+  <meta itemprop="method" content="GET">
+  <meta itemprop="action" content="Allow">
+</div>
+<div hidden itemscope itemtype="https://pagelove.org/AuthorizationRule">
+  <meta itemprop="actor" content="*">
+  <meta itemprop="resource" content="/demo-03-resource-exchange/index.html">
+  <meta itemprop="method" content="POST">
+  <meta itemprop="selector" content="#pl-listings">
+  <meta itemprop="action" content="Allow">
+</div>
+<div hidden itemscope itemtype="https://pagelove.org/AuthorizationRule">
+  <meta itemprop="actor" content="*">
+  <meta itemprop="resource" content="/demo-03-resource-exchange/index.html">
+  <meta itemprop="method" content="PUT">
+  <meta itemprop="selector" content=".status-tag">
+  <meta itemprop="action" content="Allow">
+</div>
+<div hidden itemscope itemtype="https://pagelove.org/AuthorizationRule">
+  <meta itemprop="actor" content="*">
+  <meta itemprop="resource" content="/demo-03-resource-exchange/index.html">
+  <meta itemprop="method" content="POST">
+  <meta itemprop="selector" content="#pl-claims">
+  <meta itemprop="action" content="Allow">
+</div>
+<div hidden itemscope itemtype="https://pagelove.org/AuthorizationRule">
+  <meta itemprop="actor" content="*">
+  <meta itemprop="resource" content="/demo-03-resource-exchange/index.html">
+  <meta itemprop="method" content="DELETE">
+  <meta itemprop="selector" content=".claim">
+  <meta itemprop="action" content="Allow">
+</div>
+
+</body>
+</html>

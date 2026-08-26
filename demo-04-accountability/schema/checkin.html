@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Schema — CheckIn</title></head>
+<body>
+
+<!-- checkInKey = date:author, single unique property, enforces one
+     check-in per member per day. See BUILD-REFERENCE.md for why a
+     composite unique group isn't used (verified broken on this host). -->
+<div itemscope itemtype="https://pagelove.org/Schema">
+  <meta itemprop="type" content="https://__PAGELOVE_HOST__/vocab/CheckIn">
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="checkInKey">
+    <meta itemprop="type" content="https://schema.host/Text">
+    <meta itemprop="cardinality" content="1..1">
+    <meta itemprop="unique" content="true">
+  </div>
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="author">
+    <meta itemprop="type" content="https://schema.host/Text">
+    <meta itemprop="cardinality" content="1..1">
+  </div>
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="date">
+    <meta itemprop="type" content="https://schema.host/Text">
+    <meta itemprop="cardinality" content="1..1">
+  </div>
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="goalProgress">
+    <meta itemprop="type" content="https://schema.host/Text">
+    <meta itemprop="cardinality" content="1..1">
+  </div>
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="note">
+    <meta itemprop="type" content="https://schema.host/Text">
+    <meta itemprop="cardinality" content="0..1">
+  </div>
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="createdAt">
+    <meta itemprop="type" content="https://schema.host/DateTime">
+    <meta itemprop="cardinality" content="1..1">
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; object-src 'none'">
+<title>Accountability — 100 Days of Practice</title>
+<link rel="icon" href="/favicon.svg">
+<meta name="description" content="An accountability-group demo built on Pagelove: daily check-ins, one per member per day, behind a members-only feed.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Accountability — 100 Days of Practice">
+<meta property="og:description" content="An accountability-group demo built on Pagelove: daily check-ins, one per member per day, behind a members-only feed.">
+<meta property="og:url" content="https://__PAGELOVE_HOST__/demo-04-accountability/">
+<meta property="og:image" content="https://__PAGELOVE_HOST__/assets/og-demo-apps.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#11152A">
+<link rel="canonical" href="https://__PAGELOVE_HOST__/demo-04-accountability/">
+<link rel="stylesheet" href="/demo-04-accountability/styles.css?v=15">
+<script src="/demo-04-accountability/app.js?v=11" defer></script>
+<script src="/assets/vendor/anime.umd.min.js" defer></script>
+<script src="/assets/motion-core.js?v=2" defer></script>
+<script src="/demo-04-accountability/motion.js?v=5" defer></script>
+<script src="/assets/ui-enhance.js?v=6" defer></script>
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="topbar">
+  <div>
+    <h1>100 Days of Practice — Accountability</h1>
+    <p>A calmer way to keep a promise. Mark today, see the rhythm you are building, and keep the shared feed private to members.</p>
+  </div>
+  <p class="identity-picker">
+    <label for="pl-identity">Checking in as</label>
+    <select id="pl-identity">
+      <option value="alice">Alice</option>
+      <option value="ben">Ben</option>
+      <option value="carla">Carla</option>
+      <option value="dmitri">Dmitri</option>
+      <option value="elena">Elena</option>
+      <option value="farid">Farid</option>
+    </select>
+  </p>
+</header>
+
+<div class="stats">
+  <div class="stat">
+    <p class="stat-label">Current streak</p>
+    <div class="stat-ring">
+      <svg class="ring" width="104" height="104" viewBox="0 0 104 104" aria-hidden="true">
+        <circle class="track" cx="52" cy="52" r="44"></circle>
+        <circle class="value" cx="52" cy="52" r="44" data-pct="63"></circle>
+      </svg>
+      <span class="stat-value" data-count="14">14</span>
+    </div>
+    <p class="visually-hidden">Current streak: 14 days, 62 percent of the 100-day goal.</p>
+  </div>
+  <div class="stat">
+    <p class="stat-label">This week</p>
+    <span class="stat-value" data-count="5">5</span>
+    <div class="week" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div>
+    <p class="visually-hidden">Checked in 5 of the last 7 days.</p>
+  </div>
+  <div class="stat">
+    <p class="stat-label">Total check-ins</p>
+    <span class="stat-value" data-count="63">63</span>
+  </div>
+</div>
+
+
+<section class="hundred" aria-labelledby="hundred-h">
+  <div class="hundred-head">
+    <h2 id="hundred-h">100 days</h2>
+    <p class="hundred-legend">
+      <span class="key key-done"></span> done
+      <span class="key key-today"></span> today
+      <span class="key key-todo"></span> ahead
+    </p>
+  </div>
+  <div class="hundred-grid" id="pl-hundred" aria-hidden="true"></div>
+  <p class="visually-hidden">63 of 100 days completed. Day 64 is today.</p>
+</section>
+
+<p class="privacy-note">
+  <strong>Mechanic showcase:</strong> this is the one community in the set
+  where the whole feed sits behind a members-only gate, not just individual
+  posts — a public landing page (this one) plus a
+  <a href="/demo-04-accountability/feed.html">separate, whole-resource-denied
+  feed</a>. It's also the one where a second check-in for the same day is
+  rejected outright, not just discouraged in the UI.
+</p>
+
+<form class="checkin-form" id="pl-checkin-form">
+  <h2>Today's check-in</h2>
+  <span class="field">
+    <label for="ci-progress">How did today go?</label>
+    <select id="ci-progress">
+      <option value="ahead">Ahead of plan</option>
+      <option value="on-track" selected>On track</option>
+      <option value="behind">Behind, but showed up</option>
+    </select>
+  </span>
+  <span class="field">
+    <label for="ci-note">Note (optional)</label>
+    <textarea id="ci-note" maxlength="500"></textarea>
+  </span>
+  <button type="submit" class="btn">Check in for today</button>
+  <button type="button" class="btn-ghost" id="pl-peek">🔒 Try viewing the feed (anonymous)</button>
+</form>
+
+<div class="result-box" id="pl-result" hidden></div>
+
+</div>
+
+<div class="toast-stack" id="pl-toasts" role="status" aria-live="polite"></div>
+
+<!-- Authorization: this landing page is public read; no writes are
+     permitted here -- check-ins POST to feed.html directly, a separate
+     resource with its own members-only rules. Scoped to this exact page,
+     not resource:"/*" -- see BUILD-REFERENCE.md. -->
+<div hidden itemscope itemtype="https://pagelove.org/AuthorizationRule">
+  <meta itemprop="actor" content="*">
+  <meta itemprop="resource" content="/demo-04-accountability/index.html">
+  <meta itemprop="method" content="GET">
+  <meta itemprop="action" content="Allow">
+</div>
+
+</body>
+</html>
