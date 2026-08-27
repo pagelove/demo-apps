@@ -1,0 +1,12 @@
+.deploy/
+.deploy-ci/
+.ci-build/
+.lighthouseci/
+node_modules/
+playwright-report/
+test-results/
+.DS_Store
+Thumbs.db
+*.log
+__pycache__/
+.venv/

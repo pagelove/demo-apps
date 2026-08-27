@@ -1,0 +1,319 @@
+/* ============================================================
+   09 — Resource Exchange · "Workshop Ticket"
+   Manila work order. Condensed display type, rubber-stamp status.
+   Fonts: Bebas Neue (display) + JetBrains Mono (labels).
+   ============================================================ */
+
+@font-face {
+  font-family: "Bebas Neue";
+  src: url("/assets/fonts/BebasNeue-Regular.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/assets/fonts/JetBrainsMono-Variable.woff2") format("woff2");
+  font-weight: 400 700; font-style: normal; font-display: swap;
+}
+
+:root {
+  --bg: #E8E2D4;
+  --card: #F6F2E7;
+  --card-edge: #CFC5AE;
+  --ink: #23201A;
+  --muted: #665F51;
+
+  --stamp-open: #1F7A4C;
+  --stamp-claimed: #925E16;
+  --stamp-done: #6E685D;
+  --need: #B33A2B;
+  --have: #2C5F8A;
+
+  --display: "Bebas Neue", "Arial Narrow", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+/* The UA's `[hidden] { display: none }` loses to any author `display` rule
+   below, and every demo here toggles `element.hidden` to show and hide
+   panels. Without this, hiding silently stops working. */
+[hidden] { display: none !important; }
+
+/* A long unbroken token -- a pasted URL, a 200-character "word" -- must wrap
+   rather than push its container past its grid track and break the row.
+   `anywhere` rather than `break-word` on purpose: only `anywhere` reduces the
+   element's min-content width, and a grid or flex item defaults to
+   `min-width: auto`, which refuses to shrink below its longest word. With
+   `break-word` alone, demo-06 and demo-10 still blew 1.4k px past the viewport.
+   The `min-width: 0` below is the other half of the same fix. */
+h1, h2, h3, h4, p, li, a, span, strong, em, code, label, time,
+button, input, textarea { overflow-wrap: anywhere; }
+.card, .post, .listing, .idea, .topic, .question, .profile-card, .submission,
+.lesson, .resource, .nominee, .archive-item, .member-card, .comment, .reply,
+.answer, .idea-body-wrap { min-width: 0; }
+
+
+body {
+  margin: 0;
+  padding-block-end: 80px;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.wrap { max-width: 1020px; margin-inline: auto; padding: 0 20px; }
+
+h1, h2 { margin: 0; }
+p { margin: 0 0 12px; }
+p:last-child { margin-bottom: 0; }
+a { color: var(--have); }
+
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+.topbar {
+  padding-block: clamp(36px, 6vw, 64px) 20px;
+  display: flex; flex-wrap: wrap; gap: 18px;
+  justify-content: space-between; align-items: flex-end;
+  border-bottom: 3px double var(--card-edge);
+  margin-bottom: 24px;
+}
+.topbar h1 {
+  font-family: var(--display);
+  font-size: clamp(38px, 6.4vw, 68px);
+  line-height: 0.92;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  max-width: 14ch;
+}
+.topbar > div > p { color: var(--muted); max-width: 48ch; margin-top: 12px; font-size: 14px; }
+
+.identity-picker { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.identity-picker select {
+  font: inherit; font-size: 13px; letter-spacing: 0; text-transform: none;
+  margin-left: 6px; min-height: 44px; padding: 9px 12px;
+  background: var(--card); color: var(--ink);
+  border: 1px solid var(--card-edge); border-radius: 0;
+}
+
+/* ---------- Filters ---------- */
+
+.filter-tabs { display: flex; flex-wrap: wrap; gap: 0; margin-bottom: 22px; }
+.filter-tab {
+  font-family: var(--mono); font-size: 11.5px; font-weight: 700; cursor: pointer;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  min-height: 44px; padding: 12px 20px;
+  background: var(--card); color: var(--muted);
+  border: 1px solid var(--card-edge); border-right-width: 0;
+  transition: background 120ms ease, color 120ms ease;
+}
+.filter-tab:last-child { border-right-width: 1px; }
+.filter-tab:hover { color: var(--ink); }
+.filter-tab.is-active { background: var(--ink); color: var(--card); border-color: var(--ink); }
+
+/* ---------- Compose ---------- */
+
+.new-listing {
+  background: var(--card);
+  border: 1px solid var(--card-edge);
+  padding: 22px 24px;
+  margin-bottom: 26px;
+  box-shadow: 4px 4px 0 var(--card-edge);
+}
+.new-listing h2 {
+  font-family: var(--display); font-size: 26px;
+  letter-spacing: 0.02em; text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.field { display: block; margin-bottom: 14px; }
+.field label {
+  font-family: var(--mono); display: block;
+  font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 6px;
+}
+.field input, .field select, .field textarea {
+  width: 100%; font: inherit; color: var(--ink);
+  background: var(--bg); border: 1px solid var(--card-edge);
+  border-radius: 0; padding: 11px 13px; min-height: 44px;
+}
+.field textarea { resize: vertical; min-height: 4.5rem; }
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--ink); }
+
+.btn {
+  font-family: var(--mono); font-size: 12px; font-weight: 700; cursor: pointer;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  min-height: 44px; padding: 12px 22px;
+  background: var(--ink); color: var(--card);
+  border: 0; border-radius: 0;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+.btn:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--card-edge); }
+
+.btn-ghost {
+  font-family: var(--mono); font-size: 11px; font-weight: 700; cursor: pointer;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  min-height: 44px; padding: 10px 16px;
+  background: transparent; color: var(--muted);
+  border: 1px solid var(--card-edge); border-radius: 0;
+}
+.btn-ghost:hover { color: var(--ink); border-color: var(--ink); }
+
+/* ---------- Listings ---------- */
+
+.listing-grid {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: 18px;
+  grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+}
+
+.listing {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--card-edge);
+  padding: 20px 22px 18px;
+  box-shadow: 4px 4px 0 var(--card-edge);
+  display: flex; flex-direction: column;
+}
+/* Punched holes down the left edge, like a filed work order. */
+.listing::before {
+  content: "";
+  position: absolute; left: 7px; top: 18px; bottom: 18px; width: 6px;
+  background-image: radial-gradient(circle at 3px 3px, var(--bg) 2.6px, transparent 2.8px);
+  background-size: 6px 17px;
+  background-repeat: repeat-y;
+}
+.listing { padding-left: 26px; }
+
+.listing-type {
+  font-family: var(--mono); font-size: 10px; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  margin-bottom: 8px; display: inline-block;
+}
+.listing-type[data-type="need"] { color: var(--need); }
+.listing-type[data-type="have"] { color: var(--have); }
+
+.listing-title {
+  font-family: var(--display);
+  font-size: 25px; line-height: 1.02;
+  letter-spacing: 0.01em; text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.listing-desc { font-size: 14.5px; color: var(--ink); margin-bottom: 14px; }
+
+.listing-meta {
+  font-family: var(--mono); font-size: 10.5px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted);
+  margin-top: auto;
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+}
+.listing-meta strong { color: var(--ink); font-weight: 700; }
+
+/* Rubber stamp. Rotated, hollow, ink-bled edges. */
+.status-tag {
+  display: inline-block;
+  font-family: var(--display); font-size: 17px;
+  letter-spacing: 0.09em; text-transform: uppercase;
+  padding: 2px 9px 0;
+  border: 2px solid currentColor;
+  border-radius: 3px;
+  transform: rotate(-3.5deg);
+  opacity: 0.86;
+}
+.status-tag[data-status="open"]      { color: var(--stamp-open); }
+.status-tag[data-status="claimed"]   { color: var(--stamp-claimed); }
+.status-tag[data-status="completed"] { color: var(--stamp-done); }
+
+.listing-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.listing-actions:empty { margin-top: 0; }
+
+/* ---------- Toasts ---------- */
+
+.toast-stack { position: fixed; right: 16px; bottom: 88px; display: grid; gap: 8px; z-index: 50; }
+.toast {
+  font-family: var(--mono); font-size: 12px;
+  letter-spacing: 0.05em;
+  background: var(--ink); color: var(--card);
+  border-radius: 0; padding: 12px 16px;
+  box-shadow: 4px 4px 0 rgba(35,32,26,0.28);
+}
+.toast.error { background: var(--need); }
+
+/* ---------- Motion ---------- */
+
+.motion .listing { opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .motion .listing { opacity: 1 !important; transform: none !important; }
+  .btn, .filter-tab { transition: none !important; }
+}
+
+
+/* ---------- Docket header ---------- */
+/* Good bones, but the masthead was only large type. A work order opens with a
+   docket block. */
+
+.topbar { position: relative; }
+.topbar::after {
+  content: "DOCKET 09 / TOOL LIBRARY CO-OP / ISSUED WEEKLY";
+  position: absolute; right: 0; top: 10px;
+  font-family: var(--mono); font-size: 9.5px; font-weight: 700;
+  letter-spacing: 0.18em; color: var(--muted);
+  border: 1px solid var(--card-edge);
+  padding: 7px 12px;
+  background: var(--card);
+}
+@media (max-width: 900px) {
+  .topbar::after { position: static; display: inline-block; margin-top: 12px; }
+}
+
+.listing { transition: transform 120ms ease, box-shadow 120ms ease; }
+.listing:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--card-edge); }
+
+
+/* ---------- Compose affordance ---------- */
+.compose-jump { margin: 0 0 20px; }
+.btn-jump {
+  font-family: var(--mono); font-size: 12px; font-weight: 700; cursor: pointer;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  min-height: 44px; padding: 12px 20px;
+  background: var(--card); color: var(--ink);
+  border: 1px solid var(--card-edge); border-radius: 0;
+  box-shadow: 3px 3px 0 var(--card-edge);
+}
+.btn-jump:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--card-edge); }
+.new-listing { margin-top: 34px; }
+
+
+/* ---------- Docket tally ---------- */
+/* The docket chip sits top-right, so the tally goes under it: three boxed
+   figures, stamped like the rest of the form. */
+
+.topbar::after { z-index: 1; }
+.pl-stats {
+  display: flex; gap: 0; margin: 0 0 0 auto;
+  border: 1px solid var(--card-edge);
+  background: var(--card);
+  box-shadow: 4px 4px 0 var(--card-edge);
+}
+.pl-stats div { padding: 12px 20px; border-right: 1px solid var(--card-edge); }
+.pl-stats div:last-child { border-right: 0; }
+.pl-stats dt {
+  font-family: var(--mono); font-size: 9px; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--muted); margin: 0 0 5px;
+}
+.pl-stats dd {
+  margin: 0; font-family: var(--display); font-size: 30px; line-height: 0.9;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+.pl-stats div:last-child dd { color: var(--stamp-open); }
+
+@media (max-width: 640px) {
+  .pl-stats { flex-wrap: wrap; }
+}

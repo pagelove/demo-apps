@@ -1,0 +1,45 @@
+name: Validate demos
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12.10"
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24.20.0"
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.3.5"
+      - name: Install pinned test dependencies
+        run: bun install --frozen-lockfile
+      - name: Install Chromium
+        run: node node_modules/@playwright/test/cli.js install --with-deps chromium
+      - name: Check references, hostnames, whitespace, and metadata
+        run: python scripts/check-repo.py
+      - name: Verify deployment bundle
+        run: python scripts/test-deploy.py
+      - name: Check JavaScript syntax
+        shell: bash
+        run: |
+          mkdir -p .ci-build
+          while IFS= read -r -d '' file; do
+            bun build --target browser "$file" --outdir .ci-build >/dev/null
+          done < <(find assets demo-* -type f -name '*.js' -not -path 'assets/vendor/*' -print0)
+          node --check scripts/serve-test.cjs
+          node --check playwright.config.mjs
+          node --check tests/demo-pages.spec.js
+      - name: Prepare browser-test bundle
+        run: bun run prepare:test
+      - name: Run browser, accessibility, and performance checks
+        run: bun run test:browser

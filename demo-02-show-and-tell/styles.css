@@ -1,0 +1,318 @@
+/* ============================================================
+   01 — Show & Tell · "Midnight Gallery"
+   Dark gallery; the work is the light source.
+   Fonts: Space Grotesk (display) + JetBrains Mono (labels).
+   ============================================================ */
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/assets/fonts/SpaceGrotesk-Variable.woff2") format("woff2");
+  font-weight: 300 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/assets/fonts/JetBrainsMono-Variable.woff2") format("woff2");
+  font-weight: 400 700; font-style: normal; font-display: swap;
+}
+
+:root {
+  --bg: #0B0D12;
+  --surface: #141822;
+  --surface-2: #1C2130;
+  --hairline: rgba(255,255,255,0.08);
+  --text: #EEF1F6;
+  --muted: #98A2B8;
+  --accent: #7DF2C6;
+  --accent-2: #FF8A6B;
+
+  --font-display: "Space Grotesk", system-ui, -apple-system, sans-serif;
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+
+* { box-sizing: border-box; }
+
+/* The UA's `[hidden] { display: none }` loses to any author `display` rule
+   below, and every demo here toggles `element.hidden` to show and hide
+   panels. Without this, hiding silently stops working. */
+[hidden] { display: none !important; }
+
+/* A long unbroken token -- a pasted URL, a 200-character "word" -- must wrap
+   rather than push its container past its grid track and break the row.
+   `anywhere` rather than `break-word` on purpose: only `anywhere` reduces the
+   element's min-content width, and a grid or flex item defaults to
+   `min-width: auto`, which refuses to shrink below its longest word. With
+   `break-word` alone, demo-06 and demo-10 still blew 1.4k px past the viewport.
+   The `min-width: 0` below is the other half of the same fix. */
+h1, h2, h3, h4, p, li, a, span, strong, em, code, label, time,
+button, input, textarea { overflow-wrap: anywhere; }
+.card, .post, .listing, .idea, .topic, .question, .profile-card, .submission,
+.lesson, .resource, .nominee, .archive-item, .member-card, .comment, .reply,
+.answer, .idea-body-wrap { min-width: 0; }
+
+
+body {
+  margin: 0;
+  padding-block-end: 72px;          /* clear the platform's fixed footer */
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: 1180px; margin-inline: auto; padding: 0 24px; }
+@media (min-width: 900px) { .wrap { padding: 0 48px; } }
+
+h1, h2 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.03em; margin: 0; }
+p { margin: 0 0 12px; }
+p:last-child { margin-bottom: 0; }
+a { color: var(--accent); }
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+
+/* ---------- Hero (chrome, added outside constrained regions) ---------- */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-bottom: 1px solid var(--hairline);
+  /* Fallback so a skipped/failed WebGL load is invisible to the user. */
+  background:
+    radial-gradient(680px 420px at 22% 8%, rgba(125,242,198,0.16), transparent 62%),
+    radial-gradient(560px 380px at 82% 32%, rgba(255,138,107,0.13), transparent 60%),
+    var(--bg);
+}
+#hero-canvas {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+.hero-inner { padding-block: clamp(64px, 11vw, 128px) clamp(40px, 6vw, 72px); }
+
+/* ---------- Top bar ---------- */
+
+.topbar {
+  display: flex; flex-wrap: wrap; gap: 20px;
+  align-items: flex-end; justify-content: space-between;
+}
+.topbar h1 { font-size: clamp(40px, 6vw, 68px); line-height: 1.02; max-width: 15ch; }
+.topbar > div > p { color: var(--muted); max-width: 54ch; margin-top: 14px; }
+
+.identity-picker { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.identity-picker select {
+  font: inherit; letter-spacing: 0.08em; text-transform: none;
+  margin-top: 6px; min-height: 44px; padding: 8px 12px;
+  background: var(--surface-2); color: var(--text);
+  border: 1px solid var(--hairline); border-radius: 10px;
+}
+
+.eyebrow {
+  font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 18px;
+}
+
+/* ---------- Forms ---------- */
+
+.new-submission {
+  background: rgba(255,255,255,0.035);
+  border: 1px solid var(--hairline);
+  border-radius: 18px;
+  padding: 24px;
+  margin-block: 40px;
+  backdrop-filter: blur(14px);
+}
+.new-submission h2 { font-size: 20px; margin-bottom: 16px; }
+.field { display: block; margin-bottom: 14px; }
+.field label {
+  display: block; font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 6px;
+}
+.field input, .field textarea {
+  width: 100%; font: inherit; color: var(--text);
+  background: var(--bg); border: 1px solid var(--hairline);
+  border-radius: 10px; padding: 11px 14px; min-height: 44px;
+}
+.field textarea { resize: vertical; min-height: 5rem; }
+.field input:focus, .field textarea:focus { border-color: var(--accent); }
+
+.btn {
+  font: inherit; font-weight: 600; cursor: pointer;
+  min-height: 44px; padding: 12px 22px;
+  background: var(--accent); color: #06231A;
+  border: 0; border-radius: 12px;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+.btn:hover { transform: translateY(-1px); box-shadow: 0 10px 26px -12px rgba(125,242,198,0.7); }
+
+.btn-ghost {
+  font: inherit; font-size: 12px; font-family: var(--font-mono);
+  letter-spacing: 0.08em; cursor: pointer;
+  min-height: 44px; padding: 8px 14px;
+  background: transparent; color: var(--muted);
+  border: 1px solid var(--hairline); border-radius: 10px;
+  transition: color 160ms ease, border-color 160ms ease;
+}
+.btn-ghost:hover { color: var(--text); border-color: var(--accent); }
+
+/* ---------- The gallery grid (constrained: style only, never restructure) ---------- */
+
+/* Cards size to their own content. An earlier version tried a masonry effect
+   with `grid-auto-rows: 6px` plus hard-coded `grid-row: span N`, which ignored
+   the 22px row gap: a `span 46` card measured 46*6 + 45*22 = 1266px, so every
+   card became roughly 1200-1400px of mostly empty space. Row heights are
+   content-driven now, and `align-items: start` keeps a short card short instead
+   of stretching it to match its tallest neighbour. */
+.grid {
+  list-style: none; margin: 0 0 56px; padding: 0;
+  display: grid; gap: 22px;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  align-items: start;
+}
+
+.card {
+  position: relative;
+  display: flex; flex-direction: column;
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--hairline);
+  border-radius: 18px;
+  overflow: hidden;
+  transition: transform 200ms cubic-bezier(0.16,1,0.3,1),
+              border-color 200ms ease, box-shadow 200ms ease;
+}
+.card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(125,242,198,0.4);
+  box-shadow: 0 22px 48px -28px rgba(0,0,0,0.9);
+}
+
+.card-thumb {
+  position: relative;
+  aspect-ratio: 4/3;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3.2rem;
+  background: linear-gradient(150deg, var(--surface-2), var(--surface));
+  border-bottom: 1px solid var(--hairline);
+}
+.card-thumb::after {                    /* soft radial glow — CSS only */
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(60% 60% at 50% 45%, rgba(125,242,198,0.20), transparent 70%);
+  opacity: 0.75; transition: opacity 220ms ease;
+  pointer-events: none;
+}
+.card:hover .card-thumb::after { opacity: 1; }
+
+.card-body { padding: 18px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.card-title { font-family: var(--font-display); font-weight: 600; font-size: 18px; letter-spacing: -0.02em; margin: 0; line-height: 1.25; }
+.card-desc { margin: 0; font-size: 14px; color: var(--muted); }
+
+.tags { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; }
+.tag {
+  font-family: var(--font-mono); font-size: 10.5px;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(125,242,198,0.10);
+  border: 1px solid rgba(125,242,198,0.22);
+  border-radius: 999px; padding: 3px 9px;
+}
+
+.card-meta { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin: 0; }
+.card-meta strong { color: var(--text); font-weight: 500; }
+
+.card-foot {
+  margin-top: auto; padding-top: 12px;
+  border-top: 1px solid var(--hairline);
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.reaction-count { font-family: var(--font-mono); font-size: 13px; font-variant-numeric: tabular-nums; color: var(--text); }
+
+.btn-react {
+  font: inherit; font-size: 12px; font-family: var(--font-mono);
+  cursor: pointer; min-height: 44px; padding: 8px 14px;
+  background: transparent; color: var(--accent);
+  border: 1px solid rgba(125,242,198,0.35); border-radius: 10px;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+.btn-react:hover { background: rgba(125,242,198,0.12); }
+.btn-react.is-reacted { background: var(--accent); color: #06231A; border-color: var(--accent); }
+
+/* ---------- Comments (constrained) ---------- */
+
+.comments {
+  list-style: none; margin: 12px 0 0; padding: 12px 0 0;
+  border-top: 1px dashed var(--hairline);
+  display: grid; gap: 10px;
+}
+/* With no comments there is nothing to separate: an empty list still drew its
+   dashed rule and held 13px of height inside every card. */
+.comments:empty { display: none; }
+.comment { padding-left: 12px; border-left: 2px solid rgba(255,138,107,0.45); }
+.comment-meta { font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); margin: 0; }
+.comment-meta strong { color: var(--accent-2); font-weight: 500; }
+.comment-body { margin: 4px 0 0; font-size: 13.5px; }
+
+/* ---------- Comment composer panel ---------- */
+
+.new-comment {
+  position: fixed; left: 16px; right: 16px; bottom: 88px;
+  max-width: 640px; margin-inline: auto; z-index: 40;
+  display: flex; gap: 10px; align-items: flex-start;
+  background: var(--surface); border: 1px solid var(--hairline);
+  border-radius: 16px; padding: 16px;
+  box-shadow: 0 26px 60px -24px rgba(0,0,0,0.95);
+}
+.reply-panel-body { flex: 1; }
+.reply-target-label { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+.new-comment textarea {
+  width: 100%; font: inherit; color: var(--text);
+  background: var(--bg); border: 1px solid var(--hairline);
+  border-radius: 10px; padding: 10px 12px; resize: vertical; min-height: 3rem;
+}
+
+/* ---------- Toasts ---------- */
+
+.toast-stack { position: fixed; right: 16px; bottom: 88px; display: grid; gap: 8px; z-index: 50; }
+.toast {
+  font-family: var(--font-mono); font-size: 12px;
+  background: var(--surface-2); color: var(--text);
+  border: 1px solid var(--hairline); border-left: 3px solid var(--accent);
+  border-radius: 10px; padding: 11px 16px;
+  box-shadow: 0 18px 40px -20px rgba(0,0,0,0.9);
+}
+.toast.error { border-left-color: var(--accent-2); }
+
+/* ---------- Motion (opt-in; content is visible without JS) ---------- */
+
+.motion .card { opacity: 0; }
+.motion .hero-inner > * { opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .motion .card,
+  .motion .hero-inner > * { opacity: 1 !important; transform: none !important; }
+  .card, .btn, .btn-react { transition: none !important; }
+}
+
+
+/* ---------- Compose affordance ---------- */
+/* The form used to fill the whole fold under the hero. It sits below the grid
+   now; this takes its place. */
+.compose-jump { margin: 0 0 24px; }
+.btn-jump {
+  font: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
+  min-height: 44px; padding: 12px 22px;
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--hairline); border-radius: 10px;
+}
+.btn-jump:hover { border-color: var(--accent); color: var(--accent); }
+.new-submission { margin-top: 40px; }

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Schema — Listing</title></head>
+<body>
+<div itemscope itemtype="https://pagelove.org/Schema">
+  <meta itemprop="type" content="https://__PAGELOVE_HOST__/vocab/Listing">
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="listingId"><meta itemprop="type" content="https://schema.host/Text"><meta itemprop="cardinality" content="1..1"><meta itemprop="unique" content="true"><meta itemprop="@key" content="true">
+  </div>
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="listingType"><meta itemprop="type" content="https://schema.host/Text"><meta itemprop="cardinality" content="1..1">
+  </div>
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="title"><meta itemprop="type" content="https://schema.host/Text"><meta itemprop="cardinality" content="1..1">
+  </div>
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="description"><meta itemprop="type" content="https://schema.host/Text"><meta itemprop="cardinality" content="1..1">
+  </div>
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="author"><meta itemprop="type" content="https://schema.host/Text"><meta itemprop="cardinality" content="1..1">
+  </div>
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="status"><meta itemprop="type" content="https://schema.host/Text"><meta itemprop="cardinality" content="1..1">
+  </div>
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="claimant"><meta itemprop="type" content="https://schema.host/Text"><meta itemprop="cardinality" content="0..1">
+  </div>
+</div>
+
+<!--
+  Transition constraint: the state machine that makes claiming
+  concurrency-safe. open -> claimed only once; claimed -> completed or
+  back to open (release). A second claim attempt (claimed -> claimed
+  is not a declared transition, and a stale claimed->claimed write is
+  rejected) or claiming something already completed is rejected with
+  422 at the storage layer, atomically -- verified working pattern from
+  demo #3. This replaces PLAN.md's original "Trigger checks existing
+  status" idea: a Trigger only sees the incoming request, never stored
+  state, so it cannot compare against a listing's current status. See
+  BUILD-REFERENCE.md.
+-->
+<!-- Entry boundary: no "from" declares the legal starting state for a
+     brand-new item. Without this, strictness (triggered by declaring any
+     transition on this property) rejects every new listing's initial
+     appearance of status="open" as an undeclared change -- verified. -->
+<div hidden itemscope itemtype="https://pagelove.org/TransitionConstraint">
+  <meta itemprop="selector" content="[itemtype='https://__PAGELOVE_HOST__/vocab/Listing']">
+  <meta itemprop="property" content="status">
+  <meta itemprop="to" content="open">
+</div>
+<div hidden itemscope itemtype="https://pagelove.org/TransitionConstraint">
+  <meta itemprop="selector" content="[itemtype='https://__PAGELOVE_HOST__/vocab/Listing']">
+  <meta itemprop="property" content="status">
+  <meta itemprop="from" content="open">
+  <meta itemprop="to" content="claimed">
+</div>
+<div hidden itemscope itemtype="https://pagelove.org/TransitionConstraint">
+  <meta itemprop="selector" content="[itemtype='https://__PAGELOVE_HOST__/vocab/Listing']">
+  <meta itemprop="property" content="status">
+  <meta itemprop="from" content="claimed">
+  <meta itemprop="to" content="completed">
+</div>
+<div hidden itemscope itemtype="https://pagelove.org/TransitionConstraint">
+  <meta itemprop="selector" content="[itemtype='https://__PAGELOVE_HOST__/vocab/Listing']">
+  <meta itemprop="property" content="status">
+  <meta itemprop="from" content="claimed">
+  <meta itemprop="to" content="open">
+</div>
+
+
+<!--
+  Claim: the actual double-claimant guard. A status transition alone
+  can't distinguish "two different people both set status=claimed" --
+  same target value is a no-op per the docs (verified) and passes
+  either way. A Claim record keyed uniquely on listingId is what
+  actually rejects a second claimant: the first POST succeeds, a second
+  POST for the same listing collides on the unique key and 422s
+  regardless of who sent it. See BUILD-REFERENCE.md.
+-->
+<div itemscope itemtype="https://pagelove.org/Schema">
+  <meta itemprop="type" content="https://__PAGELOVE_HOST__/vocab/Claim">
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="listingId"><meta itemprop="type" content="https://schema.host/Text"><meta itemprop="cardinality" content="1..1"><meta itemprop="unique" content="true">
+  </div>
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="claimant"><meta itemprop="type" content="https://schema.host/Text"><meta itemprop="cardinality" content="1..1">
+  </div>
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="claimedAt"><meta itemprop="type" content="https://schema.host/DateTime"><meta itemprop="cardinality" content="1..1">
+  </div>
+</div>
+
+</body>
+</html>

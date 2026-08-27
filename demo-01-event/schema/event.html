@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Schema — Event, Session, RSVP</title></head>
+<body>
+<div itemscope itemtype="https://pagelove.org/Schema">
+  <meta itemprop="type" content="https://__PAGELOVE_HOST__/vocab/Event">
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="title"><meta itemprop="type" content="https://schema.host/Text"><meta itemprop="cardinality" content="1..1">
+  </div>
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="eventDate"><meta itemprop="type" content="https://schema.host/DateTime"><meta itemprop="cardinality" content="1..1">
+  </div>
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="location"><meta itemprop="type" content="https://schema.host/Text"><meta itemprop="cardinality" content="1..1">
+  </div>
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="capacity"><meta itemprop="type" content="https://schema.host/Integer"><meta itemprop="cardinality" content="1..1">
+  </div>
+</div>
+<div itemscope itemtype="https://pagelove.org/Schema">
+  <meta itemprop="type" content="https://__PAGELOVE_HOST__/vocab/Session">
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="sessionEventId"><meta itemprop="type" content="https://schema.host/Text"><meta itemprop="cardinality" content="1..1">
+  </div>
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="sessionTime"><meta itemprop="type" content="https://schema.host/Text"><meta itemprop="cardinality" content="1..1">
+  </div>
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="title"><meta itemprop="type" content="https://schema.host/Text"><meta itemprop="cardinality" content="1..1">
+  </div>
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="speaker"><meta itemprop="type" content="https://schema.host/Text"><meta itemprop="cardinality" content="1..1">
+  </div>
+</div>
+<!-- rsvpKey = eventId:attendee, single unique property -- one RSVP per
+     member per event, server-enforced (verified pattern). Capacity /
+     waitlist promotion is NOT server-enforced: a Trigger only sees the
+     incoming request, never the count of existing RSVPs, so it cannot
+     compare against capacity -- see BUILD-REFERENCE.md. Waitlist status
+     here is a client-computed courtesy, not a security guarantee. -->
+<div itemscope itemtype="https://pagelove.org/Schema">
+  <meta itemprop="type" content="https://__PAGELOVE_HOST__/vocab/RSVP">
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="rsvpKey"><meta itemprop="type" content="https://schema.host/Text"><meta itemprop="cardinality" content="1..1"><meta itemprop="unique" content="true">
+  </div>
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="rsvpEventId"><meta itemprop="type" content="https://schema.host/Text"><meta itemprop="cardinality" content="1..1">
+  </div>
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="attendee"><meta itemprop="type" content="https://schema.host/Text"><meta itemprop="cardinality" content="1..1">
+  </div>
+  <div itemprop="property" itemscope itemtype="https://pagelove.org/Property">
+    <meta itemprop="name" content="rsvpStatus"><meta itemprop="type" content="https://schema.host/Text"><meta itemprop="cardinality" content="1..1">
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; object-src 'none'">
+<title>Professional — Product Ops Guild</title>
+<link rel="icon" href="/favicon.svg">
+<meta name="description" content="A professional-community demo built on Pagelove: member directory, discussions, shared resources, and a per-member activity view.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Professional — Product Ops Guild">
+<meta property="og:description" content="A professional-community demo built on Pagelove: member directory, discussions, shared resources, and a per-member activity view.">
+<meta property="og:url" content="https://__PAGELOVE_HOST__/demo-05-professional/">
+<meta property="og:image" content="https://__PAGELOVE_HOST__/assets/og-demo-apps.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#11152A">
+<link rel="canonical" href="https://__PAGELOVE_HOST__/demo-05-professional/">
+<link rel="stylesheet" href="/demo-05-professional/styles.css?v=17">
+<script src="/demo-05-professional/app.js?v=11" defer></script>
+<script src="/assets/vendor/anime.umd.min.js" defer></script>
+<script src="/assets/motion-core.js?v=2" defer></script>
+<script src="/demo-05-professional/motion.js?v=7" defer></script>
+<script src="/assets/ui-enhance.js?v=6" defer></script>
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="topbar">
+  <div>
+    <h1>Product Ops Guild — Professional</h1>
+    <p>People, conversations, and practical knowledge in one working view. Select a member to see everything they have contributed.</p>
+  </div>
+  <p class="identity-picker">
+    <label for="pl-identity">Posting as</label>
+    <select id="pl-identity">
+      <option value="alice">Alice</option>
+      <option value="ben">Ben</option>
+      <option value="carla">Carla</option>
+      <option value="dmitri">Dmitri</option>
+      <option value="elena">Elena</option>
+      <option value="farid">Farid</option>
+    </select>
+  </p>
+</header>
+
+<div class="console-strip" aria-label="Guild status">
+  <div class="stat-cell"><span class="stat-k">Members</span><span class="stat-v" data-metric="members">—</span></div>
+  <div class="stat-cell"><span class="stat-k">Threads</span><span class="stat-v" data-metric="topics">—</span></div>
+  <div class="stat-cell"><span class="stat-k">Replies</span><span class="stat-v" data-metric="replies">—</span></div>
+  <div class="stat-cell"><span class="stat-k">Resources</span><span class="stat-v" data-metric="resources">—</span></div>
+  <div class="stat-cell stat-wide">
+    <span class="stat-k">Activity by member</span>
+    <div class="spark" data-metric="spark" aria-hidden="true"></div>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button type="button" class="tab is-active" role="tab" id="tab-directory" aria-controls="panel-directory" aria-selected="true" data-tab="directory">Directory</button>
+  <button type="button" class="tab" role="tab" id="tab-discussions" aria-controls="panel-discussions" aria-selected="false" data-tab="discussions">Discussions</button>
+  <button type="button" class="tab" role="tab" id="tab-resources" aria-controls="panel-resources" aria-selected="false" data-tab="resources">Resources</button>
+</div>
+
+<div class="tab-panel" id="panel-directory" role="tabpanel" aria-labelledby="tab-directory" tabindex="0">
+  <ul class="member-grid" id="pl-members" aria-label="Members">
+    <li><button type="button" class="member-card" data-username="alice" data-initial="A"><span class="member-name">Alice</span><span class="member-title">Head of Product Ops, mid-market SaaS</span><span class="member-activity" data-activity-for="alice"></span></button></li>
+    <li><button type="button" class="member-card" data-username="ben" data-initial="B"><span class="member-name">Ben</span><span class="member-title">Ops lead, fintech</span><span class="member-activity" data-activity-for="ben"></span></button></li>
+    <li><button type="button" class="member-card" data-username="carla" data-initial="C"><span class="member-name">Carla</span><span class="member-title">Product ops consultant</span><span class="member-activity" data-activity-for="carla"></span></button></li>
+    <li><button type="button" class="member-card" data-username="dmitri" data-initial="D"><span class="member-name">Dmitri</span><span class="member-title">Ops manager, dev tools startup</span><span class="member-activity" data-activity-for="dmitri"></span></button></li>
+    <li><button type="button" class="member-card" data-username="elena" data-initial="E"><span class="member-name">Elena</span><span class="member-title">Head of Ops, healthtech</span><span class="member-activity" data-activity-for="elena"></span></button></li>
+    <li><button type="button" class="member-card" data-username="farid" data-initial="F"><span class="member-name">Farid</span><span class="member-title">Product ops, series B startup</span><span class="member-activity" data-activity-for="farid"></span></button></li>
+  </ul>
+  <div class="activity-panel" id="pl-activity" hidden>
+    <h2 id="pl-activity-title"></h2>
+    <div id="pl-activity-body"></div>
+  </div>
+</div>
+
+<div class="tab-panel" id="panel-discussions" role="tabpanel" aria-labelledby="tab-discussions" tabindex="0">
+
+<form class="new-form" id="pl-new-topic">
+  <h2>Start a discussion</h2>
+  <span class="field"><label for="nt-title">Title</label><input type="text" id="nt-title" maxlength="140" required></span>
+  <span class="field"><label for="nt-body">Details</label><textarea id="nt-body" maxlength="2000" required></textarea></span>
+  <button type="submit" class="btn">Post topic</button>
+</form>
+
+<ul class="topic-list" id="pl-topics" aria-label="Topics">
+
+<li class="topic" id="topic-okr-cadence" data-author="alice" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/ProTopic">
+  <h2 class="topic-title" itemprop="title">What's your OKR check-in cadence?</h2>
+  <p itemprop="body">We do weekly async updates plus a monthly review. Curious if others have found something lighter that still catches drift early.</p>
+  <p class="topic-meta">by <strong itemprop="author">Alice</strong> · <time itemprop="createdAt" datetime="2026-08-18T10:00:00Z">Aug 18</time></p>
+  <button type="button" class="btn-ghost" data-reply-toggle="replies-topic-okr-cadence">💬 Reply</button>
+  <ul class="replies" id="replies-topic-okr-cadence" aria-label="Replies">
+    <li class="reply" id="reply-okr-1" data-author="dmitri" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/ProReply">
+      <meta itemprop="topicId" content="topic-okr-cadence">
+      <p class="reply-meta"><strong itemprop="author">Dmitri</strong> <time itemprop="createdAt" datetime="2026-08-18T11:00:00Z"></time></p>
+      <p class="reply-body" itemprop="body">Bi-weekly here, monthly felt too slow to catch anything useful.</p>
+    </li>
+  </ul>
+</li>
+
+<li class="topic" id="topic-tool-consolidation" data-author="elena" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/ProTopic">
+  <h2 class="topic-title" itemprop="title">How did you pitch tool consolidation to leadership?</h2>
+  <p itemprop="body">We're running four overlapping project tools. I know the case for cutting to one, but curious how others framed the ROI to get buy-in.</p>
+  <p class="topic-meta">by <strong itemprop="author">Elena</strong> · <time itemprop="createdAt" datetime="2026-08-16T14:00:00Z">Aug 16</time></p>
+  <button type="button" class="btn-ghost" data-reply-toggle="replies-topic-tool-consolidation">💬 Reply</button>
+  <ul class="replies" id="replies-topic-tool-consolidation" aria-label="Replies"></ul>
+</li>
+
+<li class="topic" id="topic-onboarding-docs" data-author="carla" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/ProTopic">
+  <h2 class="topic-title" itemprop="title">Best format for cross-team onboarding docs?</h2>
+  <p itemprop="body">Notion page, wiki, or something more structured? Ours has sprawled into an unmaintainable mess.</p>
+  <p class="topic-meta">by <strong itemprop="author">Carla</strong> · <time itemprop="createdAt" datetime="2026-08-14T09:00:00Z">Aug 14</time></p>
+  <button type="button" class="btn-ghost" data-reply-toggle="replies-topic-onboarding-docs">💬 Reply</button>
+  <ul class="replies" id="replies-topic-onboarding-docs" aria-label="Replies">
+    <li class="reply" id="reply-onboard-1" data-author="farid" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/ProReply">
+      <meta itemprop="topicId" content="topic-onboarding-docs">
+      <p class="reply-meta"><strong itemprop="author">Farid</strong> <time itemprop="createdAt" datetime="2026-08-14T10:00:00Z"></time></p>
+      <p class="reply-body" itemprop="body">We moved to a single structured wiki with mandatory templates. Painful migration, much better since.</p>
+    </li>
+  </ul>
+</li>
+
+</ul>
+</div>
+
+<div class="tab-panel" id="panel-resources" role="tabpanel" aria-labelledby="tab-resources" tabindex="0">
+
+<form class="new-form" id="pl-new-resource">
+  <h2>Share a resource</h2>
+  <span class="field"><label for="nr-title">Title</label><input type="text" id="nr-title" maxlength="140" required></span>
+  <span class="field"><label for="nr-url">URL</label><input type="url" id="nr-url" inputmode="url" autocomplete="url" placeholder="https://example.com/resource" maxlength="300" required></span>
+  <span class="field"><label for="nr-desc">Why it's useful</label><textarea id="nr-desc" maxlength="1000" required></textarea></span>
+  <button type="submit" class="btn">Share resource</button>
+</form>
+
+<ul class="resource-list" id="pl-resources" aria-label="Resources">
+
+<li class="resource" id="resource-okr-template" data-author="alice" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/ProResource">
+  <meta itemprop="title" content="OKR check-in template we actually stuck with">
+  <h2 class="resource-title"><a itemprop="url" href="https://example.com/okr-template">OKR check-in template we actually stuck with</a></h2>
+  <p itemprop="description">Simple enough that people fill it out weekly instead of dreading it. Google Sheets, no fancy tooling.</p>
+  <p class="resource-meta">shared by <strong itemprop="submittedBy">Alice</strong> · <time itemprop="createdAt" datetime="2026-08-17T09:00:00Z">Aug 17</time></p>
+</li>
+
+<li class="resource" id="resource-tool-audit" data-author="elena" itemscope itemtype="https://__PAGELOVE_HOST__/vocab/ProResource">
+  <meta itemprop="title" content="A framework for auditing overlapping tools">
+  <h2 class="resource-title"><a itemprop="url" href="https://example.com/tool-audit-framework">A framework for auditing overlapping tools</a></h2>
+  <p itemprop="description">The scoring rubric is what made the leadership pitch land — cost, adoption, and overlap scored side by side.</p>
+  <p class="resource-meta">shared by <strong itemprop="submittedBy">Elena</strong> · <time itemprop="createdAt" datetime="2026-08-15T13:00:00Z">Aug 15</time></p>
+</li>
+
+</ul>
+</div>
+
+</div>
+
+<div class="new-comment" id="pl-reply-panel" hidden>
+  <div class="reply-panel-body">
+    <p class="reply-meta reply-target-label" id="pl-reply-target-label"></p>
+    <label class="visually-hidden" for="pl-reply-text">Reply text</label>
+    <textarea id="pl-reply-text" placeholder="Write a reply…" required></textarea>
+  </div>
+  <button type="button" class="btn" id="pl-reply-submit">Reply</button>
+  <button type="button" class="btn-ghost" id="pl-reply-cancel">Cancel</button>
+</div>
+
+<div class="toast-stack" id="pl-toasts" role="status" aria-live="polite"></div>
+
+<!-- ShapeConstraint: topics -->
+<div hidden itemscope itemtype="https://pagelove.org/ShapeConstraint">
+  <meta itemprop="resource" content="/demo-05-professional/index.html">
+  <meta itemprop="selector" content="#pl-topics">
+  <code itemprop="permit">ul[class="topic-list"][id="pl-topics"][aria-label]</code>
+  <code itemprop="permit">li[class="topic"][id^="topic-"][data-author][itemscope][itemtype]</code>
+  <code itemprop="permit">h2[class="topic-title"][itemprop="title"]</code>
+  <code itemprop="permit">p[itemprop="body"]</code>
+  <code itemprop="permit">p[class="topic-meta"]</code>
+  <code itemprop="permit">strong[itemprop="author"]</code>
+  <code itemprop="permit">time[itemprop="createdAt"][datetime]</code>
+  <code itemprop="permit">button[class="btn-ghost"][type="button"][data-reply-toggle]</code>
+  <code itemprop="permit">ul[class="replies"][id^="replies-"][aria-label]</code>
+</div>
+<div hidden itemscope itemtype="https://pagelove.org/ShapeConstraint">
+  <meta itemprop="resource" content="/demo-05-professional/index.html">
+  <meta itemprop="selector" content="#pl-topics > li">
+  <code itemprop="permit">li[class="topic"][id^="topic-"][data-author][itemscope][itemtype]</code>
+  <code itemprop="permit">h2[class="topic-title"][itemprop="title"]</code>
+  <code itemprop="permit">p[itemprop="body"]</code>
+  <code itemprop="permit">p[class="topic-meta"]</code>
+  <code itemprop="permit">strong[itemprop="author"]</code>
+  <code itemprop="permit">time[itemprop="createdAt"][datetime]</code>
+  <code itemprop="permit">button[class="btn-ghost"][type="button"][data-reply-toggle]</code>
+  <code itemprop="permit">ul[class="replies"][id^="replies-"][aria-label]</code>
+</div>
+
+<!-- ShapeConstraint: replies -->
+<div hidden itemscope itemtype="https://pagelove.org/ShapeConstraint">
+  <meta itemprop="resource" content="/demo-05-professional/index.html">
+  <meta itemprop="selector" content=".replies">
+  <code itemprop="permit">ul[class="replies"][id^="replies-"][aria-label]</code>
+  <code itemprop="permit">li[class="reply"][id^="reply-"][data-author][itemscope][itemtype]</code>
+  <code itemprop="permit">meta[itemprop="topicId"][content]</code>
+  <code itemprop="permit">p[class="reply-meta"]</code>
+  <code itemprop="permit">strong[itemprop="author"]</code>
+  <code itemprop="permit">time[itemprop="createdAt"][datetime]</code>
+  <code itemprop="permit">p[class="reply-body"][itemprop="body"]</code>
+</div>
+<div hidden itemscope itemtype="https://pagelove.org/ShapeConstraint">
+  <meta itemprop="resource" content="/demo-05-professional/index.html">
+  <meta itemprop="selector" content=".replies > li">
+  <code itemprop="permit">li[class="reply"][id^="reply-"][data-author][itemscope][itemtype]</code>
+  <code itemprop="permit">meta[itemprop="topicId"][content]</code>
+  <code itemprop="permit">p[class="reply-meta"]</code>
+  <code itemprop="permit">strong[itemprop="author"]</code>
+  <code itemprop="permit">time[itemprop="createdAt"][datetime]</code>
+  <code itemprop="permit">p[class="reply-body"][itemprop="body"]</code>
+</div>
+
+<!-- ShapeConstraint: resources -->
+<div hidden itemscope itemtype="https://pagelove.org/ShapeConstraint">
+  <meta itemprop="resource" content="/demo-05-professional/index.html">
+  <meta itemprop="selector" content="#pl-resources">
+  <code itemprop="permit">ul[class="resource-list"][id="pl-resources"][aria-label]</code>
+  <code itemprop="permit">li[class="resource"][id^="resource-"][data-author][itemscope][itemtype]</code>
+  <code itemprop="permit">meta[itemprop="title"][content]</code>
+  <code itemprop="permit">h2[class="resource-title"]</code>
+  <code itemprop="permit">a[itemprop="url"][href]</code>
+  <code itemprop="permit">p[itemprop="description"]</code>
+  <code itemprop="permit">p[class="resource-meta"]</code>
+  <code itemprop="permit">strong[itemprop="submittedBy"]</code>
+  <code itemprop="permit">time[itemprop="createdAt"][datetime]</code>
+</div>
+<div hidden itemscope itemtype="https://pagelove.org/ShapeConstraint">
+  <meta itemprop="resource" content="/demo-05-professional/index.html">
+  <meta itemprop="selector" content="#pl-resources > li">
+  <code itemprop="permit">li[class="resource"][id^="resource-"][data-author][itemscope][itemtype]</code>
+  <code itemprop="permit">meta[itemprop="title"][content]</code>
+  <code itemprop="permit">h2[class="resource-title"]</code>
+  <code itemprop="permit">a[itemprop="url"][href]</code>
+  <code itemprop="permit">p[itemprop="description"]</code>
+  <code itemprop="permit">p[class="resource-meta"]</code>
+  <code itemprop="permit">strong[itemprop="submittedBy"]</code>
+  <code itemprop="permit">time[itemprop="createdAt"][datetime]</code>
+</div>
+
+<!-- Authorization -->
+<div hidden itemscope itemtype="https://pagelove.org/AuthorizationRule">
+  <meta itemprop="actor" content="*">
+  <meta itemprop="resource" content="/demo-05-professional/index.html">
+  <meta itemprop="method" content="GET">
+  <meta itemprop="action" content="Allow">
+</div>
+<div hidden itemscope itemtype="https://pagelove.org/AuthorizationRule">
+  <meta itemprop="actor" content="*">
+  <meta itemprop="resource" content="/demo-05-professional/index.html">
+  <meta itemprop="method" content="POST">
+  <meta itemprop="selector" content="#pl-topics">
+  <meta itemprop="action" content="Allow">
+</div>
+<div hidden itemscope itemtype="https://pagelove.org/AuthorizationRule">
+  <meta itemprop="actor" content="*">
+  <meta itemprop="resource" content="/demo-05-professional/index.html">
+  <meta itemprop="method" content="POST">
+  <meta itemprop="selector" content=".replies">
+  <meta itemprop="action" content="Allow">
+</div>
+<div hidden itemscope itemtype="https://pagelove.org/AuthorizationRule">
+  <meta itemprop="actor" content="*">
+  <meta itemprop="resource" content="/demo-05-professional/index.html">
+  <meta itemprop="method" content="POST">
+  <meta itemprop="selector" content="#pl-resources">
+  <meta itemprop="action" content="Allow">
+</div>
+
+</body>
+</html>
