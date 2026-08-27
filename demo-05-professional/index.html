@@ -63,12 +63,12 @@
 
 <div class="tab-panel" id="panel-directory" role="tabpanel" aria-labelledby="tab-directory" tabindex="0">
   <ul class="member-grid" id="pl-members" aria-label="Members">
-    <li class="member-card" data-username="alice" data-initial="A" tabindex="0" role="button"><p class="member-name">Alice</p><p class="member-title">Head of Product Ops, mid-market SaaS</p><p class="member-activity" data-activity-for="alice"></p></li>
-    <li class="member-card" data-username="ben" data-initial="B" tabindex="0" role="button"><p class="member-name">Ben</p><p class="member-title">Ops lead, fintech</p><p class="member-activity" data-activity-for="ben"></p></li>
-    <li class="member-card" data-username="carla" data-initial="C" tabindex="0" role="button"><p class="member-name">Carla</p><p class="member-title">Product ops consultant</p><p class="member-activity" data-activity-for="carla"></p></li>
-    <li class="member-card" data-username="dmitri" data-initial="D" tabindex="0" role="button"><p class="member-name">Dmitri</p><p class="member-title">Ops manager, dev tools startup</p><p class="member-activity" data-activity-for="dmitri"></p></li>
-    <li class="member-card" data-username="elena" data-initial="E" tabindex="0" role="button"><p class="member-name">Elena</p><p class="member-title">Head of Ops, healthtech</p><p class="member-activity" data-activity-for="elena"></p></li>
-    <li class="member-card" data-username="farid" data-initial="F" tabindex="0" role="button"><p class="member-name">Farid</p><p class="member-title">Product ops, series B startup</p><p class="member-activity" data-activity-for="farid"></p></li>
+    <li><button type="button" class="member-card" data-username="alice" data-initial="A"><span class="member-name">Alice</span><span class="member-title">Head of Product Ops, mid-market SaaS</span><span class="member-activity" data-activity-for="alice"></span></button></li>
+    <li><button type="button" class="member-card" data-username="ben" data-initial="B"><span class="member-name">Ben</span><span class="member-title">Ops lead, fintech</span><span class="member-activity" data-activity-for="ben"></span></button></li>
+    <li><button type="button" class="member-card" data-username="carla" data-initial="C"><span class="member-name">Carla</span><span class="member-title">Product ops consultant</span><span class="member-activity" data-activity-for="carla"></span></button></li>
+    <li><button type="button" class="member-card" data-username="dmitri" data-initial="D"><span class="member-name">Dmitri</span><span class="member-title">Ops manager, dev tools startup</span><span class="member-activity" data-activity-for="dmitri"></span></button></li>
+    <li><button type="button" class="member-card" data-username="elena" data-initial="E"><span class="member-name">Elena</span><span class="member-title">Head of Ops, healthtech</span><span class="member-activity" data-activity-for="elena"></span></button></li>
+    <li><button type="button" class="member-card" data-username="farid" data-initial="F"><span class="member-name">Farid</span><span class="member-title">Product ops, series B startup</span><span class="member-activity" data-activity-for="farid"></span></button></li>
   </ul>
   <div class="activity-panel" id="pl-activity" hidden>
     <h2 id="pl-activity-title"></h2>
@@ -131,7 +131,7 @@
 <form class="new-form" id="pl-new-resource">
   <h2>Share a resource</h2>
   <span class="field"><label for="nr-title">Title</label><input type="text" id="nr-title" maxlength="140" required></span>
-  <span class="field"><label for="nr-url">URL</label><input type="text" id="nr-url" maxlength="300" required></span>
+  <span class="field"><label for="nr-url">URL</label><input type="url" id="nr-url" inputmode="url" autocomplete="url" placeholder="https://example.com/resource" maxlength="300" required></span>
   <span class="field"><label for="nr-desc">Why it's useful</label><textarea id="nr-desc" maxlength="1000" required></textarea></span>
   <button type="submit" class="btn">Share resource</button>
 </form>

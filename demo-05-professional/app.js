@@ -43,6 +43,19 @@
     return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
   }
 
+  function normalizeHttpUrl(value) {
+    let parsed;
+    try {
+      parsed = new URL(value);
+    } catch (_) {
+      throw new Error("Enter a complete URL beginning with https:// or http://.");
+    }
+    if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+      throw new Error("Only https:// and http:// links can be shared.");
+    }
+    return parsed.href;
+  }
+
   function toast(message, isError) {
     const el = document.createElement("div");
     el.className = "toast" + (isError ? " error" : "");
@@ -89,16 +102,6 @@
   // --- cross-collection member activity (mechanic showcase: substitutes
   // Liquid composition, which proved unreliable on this platform -- see
   // BUILD-REFERENCE.md -- with the verified-working client-JS pattern) ---
-  // The cards carry role="button" and tabindex="0", so they have to answer to
-  // Enter and Space the way a real button would.
-  membersGrid.addEventListener("keydown", (e) => {
-    if (e.key !== "Enter" && e.key !== " ") return;
-    const card = e.target.closest(".member-card");
-    if (!card) return;
-    e.preventDefault();
-    card.click();
-  });
-
   membersGrid.addEventListener("click", (e) => {
     const card = e.target.closest(".member-card");
     if (!card) return;
@@ -189,9 +192,18 @@
   newResourceForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const title = document.getElementById("nr-title").value.trim();
-    const url = document.getElementById("nr-url").value.trim();
+    const urlInput = document.getElementById("nr-url");
+    const rawUrl = urlInput.value.trim();
     const desc = document.getElementById("nr-desc").value.trim();
-    if (!title || !url || !desc) return;
+    if (!title || !rawUrl || !desc) return;
+    let url;
+    try {
+      url = normalizeHttpUrl(rawUrl);
+    } catch (err) {
+      toast(err.message, true);
+      urlInput.focus();
+      return;
+    }
     const author = currentIdentity();
     const id = slugify(title, "resource");
     const createdAt = new Date().toISOString();

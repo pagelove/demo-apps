@@ -1,0 +1,19 @@
+{
+  "name": "pagelove-demo-apps",
+  "private": true,
+  "type": "module",
+  "packageManager": "bun@1.3.5",
+  "engines": {
+    "bun": "1.3.5",
+    "node": "24.20.0"
+  },
+  "scripts": {
+    "install:browser": "node node_modules/@playwright/test/cli.js install chromium",
+    "prepare:test": "python scripts/prepare-deploy.py --host ci-demo.example --output .deploy-ci",
+    "test:browser": "node node_modules/@playwright/test/cli.js test"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.62.1"
+  }
+}

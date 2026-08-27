@@ -149,10 +149,36 @@ it in this repository.
 
 ```text
 python scripts/check-repo.py
+python scripts/test-deploy.py
 ```
 
-This verifies required files, `/assets/` references, page metadata, and that
-no live hostname or stray secret reached source. CI runs the same script.
+These commands verify required files, every deployed HTML reference, page
+metadata, unsafe link schemes, live hostnames, secrets, and the exact contents
+of a prepared deployment bundle.
+
+The repository also has pinned Node, Bun, browser, accessibility, and page-load
+performance checks.
+They are development-only; the deployed demos still have no package install or
+build step:
+
+```text
+bun install --frozen-lockfile
+bun run install:browser
+bun run prepare:test
+bun run test:browser
+```
+
+After deploying to a disposable host, run the non-destructive live smoke test:
+
+```text
+python scripts/check-live.py --host your-host.onpagelove.com
+```
+
+See [Live-host verification](docs/LIVE-TESTING.md) for the repeatable write,
+uniqueness, transition, authentication, and cleanup checklist. CI runs the
+local repository, deployment, browser, accessibility, and performance gates;
+live-host checks remain an explicit pre-release step because they require a
+deployed Pagelove host.
 
 ## Iteration Workflow (No Local Preview)
 

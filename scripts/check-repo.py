@@ -18,10 +18,31 @@ REQUIRED_FILES = [
     ROOT / "assets" / "fonts" / "SourceSerif4-Variable.woff",
     ROOT / "assets" / "fonts" / "Inter-Variable.woff2",
     ROOT / "assets" / "fonts" / "FiraCode-Regular.woff2",
+    ROOT / "package.json",
+    ROOT / "bun.lock",
+    ROOT / "playwright.config.mjs",
+    ROOT / "tests" / "demo-pages.spec.js",
+    ROOT / "scripts" / "test-deploy.py",
+    ROOT / "scripts" / "check-live.py",
+    ROOT / "scripts" / "serve-test.cjs",
 ]
 USER_PAGES = [ROOT / "index.html", *sorted(ROOT.glob("demo-*/index.html"))]
+DOCUMENT_PAGES = sorted(set([*USER_PAGES, *ROOT.glob("demo-*/*.html")]))
+DEPLOYED_HTML = [ROOT / "index.html", *sorted(ROOT.glob("demo-*/**/*.html"))]
 ROOT_REF = re.compile(r"(?:src|href)=[\"'](/[^\"']+)[\"']")
-SKIP_DIRS = {".git", ".deploy", ".ci-build", "__pycache__", ".venv", "node_modules"}
+UNSAFE_HREF = re.compile(r"href=[\"']\s*(?:javascript|data|vbscript):", re.IGNORECASE)
+SKIP_DIRS = {
+    ".git",
+    ".deploy",
+    ".deploy-ci",
+    ".ci-build",
+    ".lighthouseci",
+    "__pycache__",
+    ".venv",
+    "node_modules",
+    "playwright-report",
+    "test-results",
+}
 BINARY_SUFFIXES = {".woff", ".woff2", ".png", ".jpg", ".jpeg", ".webp", ".ico"}
 SECRET_PATTERN = re.compile(r"(?:pk_|sk_live_|AKIA)[A-Za-z0-9_-]{12,}")
 # Deployment hostnames must stay tokenized. prepare-deploy.py substitutes
@@ -38,17 +59,23 @@ def check() -> list[str]:
         if not path.is_file():
             errors.append(f"Missing required file: {path.relative_to(ROOT)}")
 
-    for page in USER_PAGES:
+    for page in DEPLOYED_HTML:
         if not page.is_file():
-            errors.append(f"Missing user-facing page: {page.relative_to(ROOT)}")
+            errors.append(f"Missing deployed HTML file: {page.relative_to(ROOT)}")
             continue
         html = page.read_text(encoding="utf-8")
         for match in ROOT_REF.finditer(html):
             reference = match.group(1).split("?", 1)[0].split("#", 1)[0]
             candidate = ROOT / reference.lstrip("/")
-            if reference.startswith("/assets/") or reference == "/favicon.svg":
-                if not candidate.is_file():
-                    errors.append(f"{page.relative_to(ROOT)} references missing {reference}")
+            if reference.endswith("/"):
+                candidate = candidate / "index.html"
+            if not candidate.is_file():
+                errors.append(f"{page.relative_to(ROOT)} references missing {reference}")
+        if UNSAFE_HREF.search(html):
+            errors.append(f"{page.relative_to(ROOT)} contains an unsafe link scheme")
+
+    for page in DOCUMENT_PAGES:
+        html = page.read_text(encoding="utf-8")
         if '<meta name="description"' not in html:
             errors.append(f"{page.relative_to(ROOT)} has no meta description")
         if 'rel="icon"' not in html:
@@ -88,7 +115,10 @@ def main() -> int:
         for error in errors:
             print(f"ERROR: {error}")
         return 1
-    print(f"Repository checks passed for {len(USER_PAGES)} user-facing pages.")
+    print(
+        "Repository checks passed for "
+        f"{len(DOCUMENT_PAGES)} documents and {len(DEPLOYED_HTML)} deployed HTML files."
+    )
     return 0
 
 

@@ -118,17 +118,23 @@ a { color: var(--accent); }
   grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
 }
 .member-card {
+  display: block;
+  width: 100%;
   background: var(--panel);
   border: 1px solid var(--hairline);
   border-radius: 10px;
   padding: 16px 18px;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  appearance: none;
   cursor: pointer;
   transition: border-color 140ms ease, transform 140ms ease;
 }
 .member-card:hover { border-color: var(--accent-dim); transform: translateY(-2px); }
 .member-card.is-selected { border-color: var(--accent); box-shadow: inset 3px 0 0 var(--accent); }
-.member-name { font-family: var(--mono); font-weight: 700; font-size: 15px; margin-bottom: 4px; }
-.member-title { font-size: 13px; color: var(--muted); margin: 0; }
+.member-name { display: block; font-family: var(--mono); font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+.member-title { display: block; font-size: 13px; color: var(--muted); margin: 0; }
 
 .activity-panel {
   background: var(--panel-2);
@@ -324,6 +330,7 @@ a { color: var(--accent); }
   font-family: var(--mono); font-size: 13px; font-weight: 700;
 }
 .member-activity {
+  display: block;
   font-family: var(--mono); font-size: 10px;
   letter-spacing: 0.12em; text-transform: uppercase;
   color: var(--muted); margin: 8px 0 0;
