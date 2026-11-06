@@ -8,3 +8,18 @@ DFD-REVIEW-COMMUNITY refinement 2026-11-06T02:35:50.736Z: browser503 scenario re
 
 ## DFD-REVIEW-20261106-RESULT — 2026-11-06T02:46:41.293Z
 Actor: Codex; reference PLAN. Added edition2.4 contract, authority/representation exceptions and maintainer instructions. PASS: pending form frozen;503 unknown outcome retains copyable text and blocks resubmission; actual source writes0. All named source/test commands pass. Source collections unchanged after LF normalization; script-version references updated. Decoration timeout respects explicit pending/unknown state; static fixture returns405 for writes. Exact hashes/diff in audit/document-first-review.json/.patch. No real host/user data changes or new provider/grants. Live privacy/device gates remain explicit. Public commit/readback pending.
+
+## PRODUCT-READINESS-PLAN — 2026-11-06T12:58:36.963Z — Codex
+User: complete missing functionality and product polish for all demos. Plan: Tab click changes visibility but does not update aria-selected/roving tab focus. Directory/topics/resources have no search. Fix actual tab semantics/keyboard behavior and scoped searchable lists with count/clear, keeping native pending-write and uncertain-outcome protections. Rationale and boundaries: central product-readiness PLAN.md/FINDINGS.md. Affected planned files: scoped client view/helper/styles, focused checks and release packaging; no record migration. Verification pending.
+
+## PRODUCT-READINESS-CHECK-REVISION — 2026-11-06T13:04:24.221Z — Codex
+Source check initially rejected existing historical audit patch context spaces and JSON EOF. Exempt only audit/*.patch and audit/*.json from whitespace formatting after existing secret/host checks; preserve their original bytes. Active UI/JS/CSS remains fully checked. No domain behavior changes.
+
+## PRODUCT-READINESS-TAB-CORRECTION — 2026-11-06T13:13:56.958Z — Codex
+Browser testing showed duplicate arrow handling because shared ui-enhance.js already implements tabs. Removed newly added redundant tab semantics/keydown code; retained original shared native behavior. quality.js now supplies only independent list search/count/recovery. Verification pending recheck.
+
+## PRODUCT-READINESS-APPLIED — 2026-11-06T13:25:39.093Z — Codex
+Implemented the scoped community batch from central FINDINGS.md: app-specific task views and responsive control polish, with existing source/record authority and accepted write/trust boundaries retained. Exact affected files and hashes are in the prepared diff/evidence. Nine templates: readers/deep links, sorting/reset, period-aligned summaries/lists/new-record defaults, visible exports, recoverable removal and valid move controls. Other apps: current-record roster/register sort/export, hiring role finder (local-only), community scoped search and existing shared tabs preserved, three game collection finders. Source tests and browser verification are recorded centrally; publication/final readback pending. No production permissions/security guarantee inferred from fixtures.
+
+## PRODUCT-READINESS-VERIFIED — 2026-11-06T13:56:34.367Z — Codex
+User request fulfilled within scoped product task pass; see central product-readiness FINDINGS.md. Verification: affected source checks and behavioral suites passed, including all9template period/order/export helpers, CRM/invoice state tests, and garden/circuit/world finder filters; desktop/narrow-screen browser task checks and real CSV download recorded. Source records/write/trust boundaries retained; browser fixtures do not establish hosted privacy/validation or native writes. Affected files are the complete reviewed diff and SHA256 inventory, linked by this commit. Public review deployment and final acceptance tracked centrally; ATS remains local-only as previously directed.

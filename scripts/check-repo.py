@@ -100,6 +100,10 @@ def check() -> list[str]:
         for host in sorted(set(HOST_PATTERN.findall(text)) - ALLOWED_HOSTS):
             errors.append(f"{relative} hard-codes the live host {host}; use __PAGELOVE_HOST__")
 
+        # Historical audit payloads retain their exact bytes; secrets/host checks above still apply.
+        if relative.parts[0] == "audit" and path.suffix.lower() in {".patch", ".json"}:
+            continue
+
         for number, line in enumerate(text.split("\n"), start=1):
             if TRAILING_WS.search(line):
                 errors.append(f"{relative}:{number} has trailing whitespace")

@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const PAGE = "/demo-05-professional/index.html";
+  const PAGE = location.pathname.replace(/\/$/, "/index.html");
   const MEMBERS = { alice: "Alice", ben: "Ben", carla: "Carla", dmitri: "Dmitri", elena: "Elena", farid: "Farid" };
 
   const identitySelect = document.getElementById("pl-identity");
