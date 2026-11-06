@@ -85,9 +85,9 @@
     // Disabled on the next tick so the app's own handler still receives this
     // activation; the guard is only about the *second* one.
     setTimeout(() => {
-      if (!el.isConnected) return;
+      if (!el.isConnected || el.closest('[data-save-pending],[data-save-unknown]')) return;
       el.disabled = true;
-      setTimeout(() => { el.disabled = false; }, HOLD_MS);
+      setTimeout(() => { if(!el.closest('[data-save-pending],[data-save-unknown]'))el.disabled = false; }, HOLD_MS);
     }, 0);
   }
 

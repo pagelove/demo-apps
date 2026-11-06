@@ -23,6 +23,7 @@ const contentTypes = {
 function startStaticServer(rootDirectory, port = 4173) {
   const root = path.resolve(rootDirectory);
   const server = createServer(async (request, response) => {
+    if(!['GET','HEAD'].includes(request.method)){response.writeHead(405).end('This static fixture does not save records.');return;}
     let pathname;
     try {
       pathname = decodeURIComponent(new URL(request.url, "http://localhost").pathname);

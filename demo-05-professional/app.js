@@ -22,6 +22,7 @@
   const toasts = document.getElementById("pl-toasts");
 
   let replyTarget = null;
+  const pendingForms = new WeakSet();
 
   // Storage can throw outright -- Safari private mode, disabled storage, some
   // embedded webviews. It is read in the first few lines of this file, so an
@@ -64,14 +65,27 @@
     setTimeout(() => el.remove(), 5000);
   }
 
-  async function writeFragment({ method, selector, body }) {
-    const res = await fetch(PAGE, {
-      method,
-      headers: body ? { "Content-Type": "text/html", "Range": `selector=${selector}` } : { "Range": `selector=${selector}` },
-      body,
-    });
-    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-    return res;
+  async function writeFragment({ method, selector, body, owner }) {
+    if(pendingForms.has(owner)||owner.dataset.saveUnknown)throw Error('A previous save needs reconciliation. Copy the draft, reload and check the source before retrying.');
+    pendingForms.add(owner);owner.dataset.savePending="true";
+    const controls=[...owner.querySelectorAll('input,textarea,select,button')].map(el=>[el,el.disabled]);
+    controls.forEach(([el])=>el.disabled=true);
+    const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);
+    let refused=false,uncertain=false;
+    try {
+      const res=await fetch(PAGE,{method,headers:body?{'Content-Type':'text/html','Range':'selector='+selector}:{'Range':'selector='+selector},body,signal:controller.signal,credentials:'same-origin'});
+      if(!res.ok){refused=(res.status>=400&&res.status<500)||res.status===501;throw Error(res.status+' '+res.statusText);}
+      return res;
+    } catch(error) {
+      uncertain=!refused;
+      const message=uncertain?'The save outcome is unknown. Copy your draft, reload and check the saved entries before trying again.':error.message+' Your draft is retained.';
+      let status=owner.querySelector('.save-status');if(!status){status=document.createElement('p');status.className='save-status';status.setAttribute('role','status');owner.append(status);}status.textContent=message;
+      if(uncertain)owner.dataset.saveUnknown='true';
+      throw Error(message);
+    } finally {
+      clearTimeout(timer);pendingForms.delete(owner);delete owner.dataset.savePending;controls.forEach(([el,disabled])=>el.disabled=disabled);
+      if(uncertain)owner.querySelectorAll('button[type="submit"],#pl-reply-submit').forEach(el=>el.disabled=true);
+    }
   }
 
   function slugify(text, prefix) {
@@ -128,6 +142,7 @@
   // --- topics + replies ---
   newTopicForm.addEventListener("submit", async (e) => {
     e.preventDefault();
+    if(pendingForms.has(e.currentTarget)||e.currentTarget.dataset.saveUnknown)return;
     const title = document.getElementById("nt-title").value.trim();
     const body = document.getElementById("nt-body").value.trim();
     if (!title || !body) return;
@@ -143,7 +158,7 @@
   <ul class="replies" id="${repliesId}" aria-label="Replies"></ul>
 </li>`;
     try {
-      await writeFragment({ method: "POST", selector: "#pl-topics", body: fragment });
+      await writeFragment({ method: "POST", selector: "#pl-topics", body: fragment, owner:newTopicForm });
       topicsList.insertAdjacentHTML("beforeend", fragment);
       newTopicForm.reset();
       toast("Topic posted.");
@@ -166,6 +181,7 @@
   replyCancel.addEventListener("click", () => { replyPanel.hidden = true; replyTarget = null; });
 
   replySubmit.addEventListener("click", async () => {
+    if(pendingForms.has(replyPanel)||replyPanel.dataset.saveUnknown)return;
     const body = replyText.value.trim();
     if (!body || !replyTarget) return;
     const author = currentIdentity();
@@ -178,7 +194,7 @@
   <p class="reply-body" itemprop="body">${escapeHtml(body)}</p>
 </li>`;
     try {
-      await writeFragment({ method: "POST", selector: `#${replyTarget}`, body: fragment });
+      await writeFragment({ method: "POST", selector: `#${replyTarget}`, body: fragment, owner:replyPanel });
       document.getElementById(replyTarget).insertAdjacentHTML("beforeend", fragment);
       replyPanel.hidden = true;
       replyTarget = null;
@@ -214,7 +230,7 @@
   <p class="resource-meta">shared by <strong itemprop="submittedBy">${escapeHtml(MEMBERS[author])}</strong> <time itemprop="createdAt" datetime="${createdAt}"></time></p>
 </li>`;
     try {
-      await writeFragment({ method: "POST", selector: "#pl-resources", body: fragment });
+      await writeFragment({ method: "POST", selector: "#pl-resources", body: fragment, owner:newResourceForm });
       resourcesList.insertAdjacentHTML("beforeend", fragment);
       newResourceForm.reset();
       toast("Resource shared.");

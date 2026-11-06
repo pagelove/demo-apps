@@ -1,0 +1,53 @@
+{
+  "utc": "2026-11-06T02:46:41.293Z",
+  "actor": "Codex",
+  "guideEdition": "2.4",
+  "sourceBase": "c4dd883ef3ba1b628ae4eee46d8db797fba0f4b1",
+  "checks": [
+    {
+      "name": "repository source and deployment bundle",
+      "code": 0
+    }
+  ],
+  "browser": "PASS: pending form frozen;503 unknown outcome retains copyable text and blocks resubmission; actual source writes0.",
+  "limits": [
+    "Live private policy and physical-device/AT acceptance not established by these checks."
+  ],
+  "files": [
+    {
+      "file": "AGENTS.md",
+      "sha256": "a883e3701c1568867e2982c3f53439287b83dbec8672e8705f3c1dbab2d711bd",
+      "bytes": 561
+    },
+    {
+      "file": "DOCUMENT-FIRST-REVIEW.md",
+      "sha256": "885e32c93a065aff425dd52ec3456cb508b41f098f118f7855160d8a0d9190f0",
+      "bytes": 3466
+    },
+    {
+      "file": "README.md",
+      "sha256": "e93c5beef5b6bf244d7a414a0e3a711350afcb42c9554bcbba5f69e4f0a99261",
+      "bytes": 12665
+    },
+    {
+      "file": "assets/ui-enhance.js",
+      "sha256": "afeb85ac7ec859aa01e242ec58db91be9968054d83cc6d58a9e710a07e4d881d",
+      "bytes": 11813
+    },
+    {
+      "file": "demo-05-professional/app.js",
+      "sha256": "6d58f06e1e8f8406e484a5cdde760841c7af229a8eb5637ce7f4afabf5713c85",
+      "bytes": 12064
+    },
+    {
+      "file": "demo-05-professional/index.html",
+      "sha256": "8dd86c20f9c54b257618ee751e0c8fd88f4ef552cf35cea2ddec8bd048ca9cd0",
+      "bytes": 18025
+    },
+    {
+      "file": "scripts/serve-test.cjs",
+      "sha256": "03f3f926a60e127f2dd9ffad9d4b92e30b68d9b5c7174c67da8e20a5dfd76513",
+      "bytes": 2638
+    }
+  ]
+}
