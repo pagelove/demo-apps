@@ -338,3 +338,6 @@ a { color: var(--accent); }
 .member-activity b { color: var(--accent); font-weight: 700; }
 
 .quality-search{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin:20px 0}.quality-search label{flex:1;min-width:180px;display:grid;gap:8px;font:inherit;font-size:14px;letter-spacing:0;text-transform:none}.quality-search input{min-height:44px;width:100%;font:inherit;font-size:16px;border:1px solid #667e88;border-radius:6px;padding:10px 12px;color:var(--text,#e4edf0);background:transparent}.quality-search button{min-height:44px;border:1px solid #667e88;border-radius:6px;padding:10px 16px;background:transparent;color:inherit;font:inherit;font-size:14px}.quality-search p{flex-basis:100%;margin:0;font-size:14px}.tab:focus-visible,.member-card:focus-visible{outline:2px solid currentColor;outline-offset:4px}.tab-panel [hidden]{display:none!important}@media(max-width:650px){.quality-search label{flex-basis:100%}.tabs{overflow:auto}.tab{min-height:44px;white-space:nowrap}}
+
+/* Telemetry labels stay readable; the graph spans the mobile rows. */
+.stat-k{white-space:nowrap;overflow-wrap:normal;word-break:normal}@media(max-width:520px){.console-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.stat-wide{grid-column:1/-1}}
